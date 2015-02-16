@@ -6,6 +6,9 @@
 #  * 
 #  * @author Andy Klay 2014
 #  
+import Agent
+
+
 class TestANN(object):
     """ generated source for class TestANN """
     LEARN_ROUNDS_AGENT = 100000
@@ -34,12 +37,12 @@ class TestANN(object):
         last_input[9] = 1
         toLearn = 0.5
         cls.agent.initTestInput()
-        learnV(last_input, toLearn)
+        TestANN.learnV(last_input, toLearn)
         print "\n"
         print "Soll: \n"
         print "[" + toLearn + "] ",
         print "KNN: \n"
-        print "[" + v(last_input, + "] ")
+        print "[" + TestANN.v(last_input, + "] ")
 
     # 
     # 	 * aksing agent for a value

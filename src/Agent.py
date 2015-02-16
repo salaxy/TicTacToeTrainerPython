@@ -7,9 +7,11 @@
 #import java.io.ObjectInputStream
 #import java.io.ObjectOutputStream
 #import java.util.Random
+import math
 from random import Random
 
 from selector import Selector
+from _ctypes import Array
 
 
 # 
@@ -221,14 +223,21 @@ class Agent(object):
         
         k = 0
         while k < self.N_OUTPUT:
+            deltaOutput=self.getOutputDelta(self.targetSignal, self.outputSignal)
+        
             i=0
             while i < self.N_HIDDEN:
                 bufferHiddenOutput[i][k] = self.calcWeightOutputHidden(self.weightsHiddenOutput[i][k], self.alpha, self.lastActivationHidden[i], deltaOutput, self.lastActivationOutput[k])
                 i += 1
             k += 1
         deltaOutputLayer = [None]*self.N_OUTPUT
+        
         k = 0
         while k < self.N_HIDDEN:
+            
+            delta_hidden=self.getDeltaForHiddenNeuron(deltaOutputLayer, self.weightsHiddenOutput[k])
+            
+            i=0
             while i < self.N_INPUT:
                 if not (k == self.N_HIDDEN - 1):
                     bufferInputHidden[i][k] = self.calcWeightHiddenInput(self.weightsInputHidden[i][k], self.beta, self.lastInput[i], delta_hidden)
@@ -243,7 +252,7 @@ class Agent(object):
 
     def transferFunction(self, x):
         """ generated source for method transferFunction """
-        return float(Math.tanh(x))
+        return float(math.tanh(x))
 
     def transferFunctionDerivate(self, x):
         """ generated source for method transferFunctionDerivate """
@@ -261,11 +270,11 @@ class Agent(object):
 
     def getDeltaForHiddenNeuron(self, deltaBefore, weights):
         """ generated source for method getDeltaForHiddenNeuron """
-        return weightedSum(deltaBefore, weights)
+        return self.weightedSum(deltaBefore, weights)
 
     def activationFunction(self, weights, activations):
         """ generated source for method activationFunction """
-        return self.transferFunction(weightedSum(weights, activations))
+        return self.transferFunction(self.weightedSum(weights, activations))
 
     def weightedSum(self, weights, activations):
         """ generated source for method weightedSum """
@@ -278,19 +287,22 @@ class Agent(object):
 
     def printOutWeightTable(self):
         """ generated source for method printOutWeightTable """
-        builder = StringBuilder()
+        builder = ""
         builder.append("weights_input_hidden" + "\n")
         i = 0
-        while len(weightsInputHidden):
-            while len(length):
+        while len(self.weightsInputHidden):
+            j=0
+            while len(self.weightsInputHidden[i]):
                 builder.append("[" + self.weightsInputHidden[i][j] + "]")
                 j += 1
             builder.append("\n")
             i += 1
         builder.append("weights_hidden_output" + "\n")
+        
         i = 0
-        while len(weightsHiddenOutput):
-            while len(length):
+        while len(self.weightsHiddenOutput):
+            j=0
+            while len(self.weightsHiddenOutput[i]):
                 builder.append("[" + self.weightsHiddenOutput[i][j] + "]")
                 j += 1
             builder.append("\n")
@@ -299,24 +311,25 @@ class Agent(object):
 
     def saveNetToFile(self, filePath):
         """ generated source for method saveNetToFile """
-        fs = FileOutputStream(filePath)
-        os = ObjectOutputStream(fs)
-        os.writeObject(self.weightsInputHidden)
-        os.writeObject(self.weightsHiddenOutput)
-        os.close()
+        #fs = FileOutputStream(filePath)
+        #os = ObjectOutputStream(fs)
+        #os.writeObject(self.weightsInputHidden)
+        #os.writeObject(self.weightsHiddenOutput)
+        #os.close()
 
     def loadNetFromFile(self, filePath):
         """ generated source for method loadNetFromFile """
-        fs = FileInputStream(filePath)
-        is_ = ObjectInputStream(fs)
-        self.weightsInputHidden = float(is_.readObject())
-        self.weightsHiddenOutput = float(is_.readObject())
-        is_.close()
+        #fs = FileInputStream(filePath)
+        #is_ = ObjectInputStream(fs)
+        #self.weightsInputHidden = float(is_.readObject())
+        #self.weightsHiddenOutput = float(is_.readObject())
+        #is_.close()
 
     @classmethod
     def stateToValues(cls, state):
         """ generated source for method stateToValues """
-        values = [None]*
+        values = [None]*9
+        
         i = 0
         while len(state):
             if state[i]=='X':
