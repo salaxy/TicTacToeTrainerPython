@@ -24,14 +24,14 @@ class Environment(object):
     def __init__(self):
         """ generated source for method __init__ """
         super(Environment, self).__init__()
-        initState()
+        self.initState()
 
     # 
     # 	 * initializes state
     # 	 
     def initState(self):
         """ generated source for method initState """
-        self.state = [None]*FIELD_RANGE
+        self.state = [None]*self.FIELD_RANGE
         i = 0
         while i <= self.FIELD_RANGE - 1:
             self.state[i] = '-'
@@ -61,7 +61,7 @@ class Environment(object):
     # 	 
     def getFieldContent(self, nr):
         """ generated source for method getFieldContent """
-        if isFieldInRange(nr):
+        if self.isFieldInRange(nr):
             return self.state[nr]
         else:
             return 'f'
@@ -73,7 +73,7 @@ class Environment(object):
     # 	 
     def moveX(self, nr):
         """ generated source for method moveX """
-        if isFieldInRange(nr):
+        if self.isFieldInRange(nr):
             self.state[nr] = 'X'
             self.lastPlayer = 'X'
 
@@ -84,7 +84,7 @@ class Environment(object):
     # 	 
     def moveO(self, nr):
         """ generated source for method moveO """
-        if isFieldInRange(nr):
+        if self.isFieldInRange(nr):
             self.state[nr] = 'O'
             self.lastPlayer = 'O'
 
@@ -114,7 +114,7 @@ class Environment(object):
     # 	 
     def isFinished(self):
         """ generated source for method isFinished """
-        return checkIfARowOfThreeIsComplete() or isUndecided()
+        return self.checkIfARowOfThreeIsComplete() or self.isUndecided()
 
     # 
     # 	 * doublechekc if a specific game field is free
@@ -124,7 +124,7 @@ class Environment(object):
     # 	 
     def isFieldFree(self, nr):
         """ generated source for method isFieldFree """
-        if isFieldInRange(nr):
+        if self.isFieldInRange(nr):
             if self.state[nr] == '-':
                 return True
             else:
@@ -188,7 +188,7 @@ class Environment(object):
         """ generated source for method isFull """
         value = True
         i = 0
-        while len(state):
+        while len(self.state):
             if self.state[i] == '-':
                 value = value and False
                 break
@@ -202,7 +202,7 @@ class Environment(object):
     # 	 
     def stateToString(self):
         """ generated source for method stateToString """
-        b = StringBuilder()
+        b = ""
         i = 0
         while i <= 2:
             b.append(self.state[i] + " ")
@@ -282,8 +282,8 @@ class Environment(object):
     def isPossibleMove(self, decision, playerSign):
         """ generated source for method isPossibleMove """
         #  count Signs
-        countSignA = countSignInState(self.PLAYER_SIGN_X)
-        countSignB = countSignInState(self.PLAYER_SIGN_O)
+        countSignA = self.countSignInState(self.PLAYER_SIGN_X)
+        countSignB = self.countSignInState(self.PLAYER_SIGN_O)
         #  possible if the number of signs is equal or less
         if playerSign == self.PLAYER_SIGN_X and countSignA > countSignB:
             #  its not a turn for A
@@ -309,7 +309,7 @@ class Environment(object):
         """ generated source for method countSignInState """
         value = 0
         i = 0
-        while len(length):
+        while len(self.state):
             if self.state[i] == sign:
                 value += 1
             i += 1

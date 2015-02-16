@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 """ generated source for module Selector """
 # package: de.fhb.infm.knn.neuro
-import java.util.Random
+from random import Random
+from Agent import Agent
+
 
 # 
 #  * A selector for the agent class that implements the greedy stategy!
@@ -14,7 +16,7 @@ class Selector(object):
     explorationInPercent = 0
     epsilon = float()
     agent = Agent()
-    random = Random()
+    random =  Random()
 
     def __init__(self, agent, epsilon):
         """ generated source for method __init__ """

@@ -1,17 +1,16 @@
 #!/usr/bin/env python
 """ generated source for module Agent """
 # package: de.fhb.infm.knn.neuro
-import java.io.FileInputStream
+#import java.io.FileInputStream
+#import java.io.FileOutputStream
+#import java.io.IOException
+#import java.io.ObjectInputStream
+#import java.io.ObjectOutputStream
+#import java.util.Random
+from random import Random
 
-import java.io.FileOutputStream
+from selector import Selector
 
-import java.io.IOException
-
-import java.io.ObjectInputStream
-
-import java.io.ObjectOutputStream
-
-import java.util.Random
 
 # 
 #  * This is a agent for reinforcement learning with a artificial neural net.
@@ -42,10 +41,11 @@ class Agent(object):
     # 
     # 	 * intializer
     # 	 
-    @overloaded
+    #@overloaded
+    @__init__.register(object)
     def __init__(self):
         """ generated source for method __init__ """
-        initializeNetWeights()
+        self.initializeNetWeights()
         self.selector = Selector(self, 0.0)
 
     # 
@@ -58,7 +58,7 @@ class Agent(object):
     @__init__.register(object, float, float, float)
     def __init___0(self, alpha, beta, epsilon):
         """ generated source for method __init___0 """
-        initializeNetWeights()
+        self.initializeNetWeights()
         self.selector = Selector(self, epsilon)
         self.alpha = alpha
         self.beta = beta
@@ -128,9 +128,9 @@ class Agent(object):
     # 	 
     def setInput(self, input):
         """ generated source for method setInput """
-        self.lastInput = [None]*N_INPUT
+        self.lastInput = [None]*self.N_INPUT
         i = 0
-        while i < len(length):
+        while i < len(self.lastInput):
             self.lastInput[i] = input[i]
             i += 1
         #  BIAS neuron
@@ -161,12 +161,13 @@ class Agent(object):
         """ generated source for method initializeNetWeights """
         self.random = Random()
         #  weight arrays init
-        self.weightsInputHidden = [None]*N_INPUT
-        self.weightsHiddenOutput = [None]*N_HIDDEN
+        self.weightsInputHidden = [None]*self.N_INPUT
+        self.weightsHiddenOutput = [None]*self.N_HIDDEN
         #  Random initialize
         #  input>hidden
         i = 0
         while i < self.N_INPUT:
+            j=0
             while j < self.N_HIDDEN:
                 self.weightsInputHidden[i][j] = self.random.nextFloat() * 0.1
                 if j == self.N_HIDDEN - 1:
@@ -175,6 +176,7 @@ class Agent(object):
             i += 1
         i = 0
         while i < self.N_HIDDEN:
+            j=0
             while j < self.N_OUTPUT:
                 self.weightsHiddenOutput[i][j] = self.random.nextFloat() * 0.1
                 j += 1
@@ -182,26 +184,27 @@ class Agent(object):
 
     def responseValue(self):
         """ generated source for method responseValue """
-        activationHidden = [None]*N_HIDDEN
-        bufferHidden = [None]*N_INPUT
+        activationHidden = [None]*self.N_HIDDEN
+        bufferHidden = [None]*self.N_INPUT
         i = 0
         while i < self.N_HIDDEN:
+            j=0
             while j < self.N_INPUT:
                 bufferHidden[j] = self.weightsInputHidden[j][i]
                 j += 1
             if i == self.N_HIDDEN - 1:
                 activationHidden[i] = self.biasHiddenLayer
             else:
-                activationHidden[i] = activationFunction(bufferHidden, self.lastInput)
+                activationHidden[i] = self.activationFunction(bufferHidden, self.lastInput)
             i += 1
-        activationOutput = [None]*N_OUTPUT
-        bufferOutput = [None]*N_HIDDEN
+        activationOutput = [None]*self.N_OUTPUT
+        bufferOutput = [None]*self.N_HIDDEN
         i = 0
         while i < self.N_OUTPUT:
             while j < self.N_HIDDEN:
                 bufferOutput[j] = self.weightsHiddenOutput[j][i]
                 j += 1
-            activationOutput[i] = activationFunction(bufferOutput, activationHidden)
+            activationOutput[i] = self.activationFunction(bufferOutput, activationHidden)
             i += 1
         self.lastActivationOutput = activationOutput.clone()
         self.lastActivationHidden = activationHidden.clone()
@@ -213,20 +216,22 @@ class Agent(object):
 
     def learnByBackpropagation(self):
         """ generated source for method learnByBackpropagation """
-        bufferHiddenOutput = [None]*N_HIDDEN
-        bufferInputHidden = [None]*N_INPUT
+        bufferHiddenOutput = [None]*self.N_HIDDEN
+        bufferInputHidden = [None]*self.N_INPUT
+        
         k = 0
         while k < self.N_OUTPUT:
+            i=0
             while i < self.N_HIDDEN:
-                bufferHiddenOutput[i][k] = calcWeightOutputHidden(self.weightsHiddenOutput[i][k], self.alpha, self.lastActivationHidden[i], deltaOutput, self.lastActivationOutput[k])
+                bufferHiddenOutput[i][k] = self.calcWeightOutputHidden(self.weightsHiddenOutput[i][k], self.alpha, self.lastActivationHidden[i], deltaOutput, self.lastActivationOutput[k])
                 i += 1
             k += 1
-        deltaOutputLayer = [None]*N_OUTPUT
+        deltaOutputLayer = [None]*self.N_OUTPUT
         k = 0
         while k < self.N_HIDDEN:
             while i < self.N_INPUT:
                 if not (k == self.N_HIDDEN - 1):
-                    bufferInputHidden[i][k] = calcWeightHiddenInput(self.weightsInputHidden[i][k], self.beta, self.lastInput[i], delta_hidden)
+                    bufferInputHidden[i][k] = self.calcWeightHiddenInput(self.weightsInputHidden[i][k], self.beta, self.lastInput[i], delta_hidden)
                 i += 1
             k += 1
         self.weightsInputHidden = bufferInputHidden
