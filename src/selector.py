@@ -22,7 +22,7 @@ class Selector(object):
     def __init__(self, agent, epsilon):
         """ generated source for method __init__ """
         super(Selector, self).__init__()
-        #self.agent = agent
+        self.agent = agent
         self.random = Random()
         self.explorationInPercent = int(((100 * epsilon) - 1))
         self.epsilon = epsilon

@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 """ generated source for module RandomPlayer """
 # package: de.fhb.infm.knn.trainer.worldmodel
-import java.util.Random
+#import java.util.Random
+from random import Random
 
 # 
 #  * This a random player to be used by the TemporalDifferenceTrainer for training an agent to play
@@ -55,7 +56,9 @@ class RandomPlayer(object):
         cancel = False
         #  erzeuge randomzahl und teste ob Feld frei ist.
         while not cancel:
-            decision = random.nextInt(9)
+            #decision = random.nextInt(9)
+            decision = random.randrange(1,9,1)
+            #print decision
             if fields[decision] == '-':
                 cancel = True
         return decision
