@@ -2,7 +2,8 @@
 """ generated source for module Selector """
 # package: de.fhb.infm.knn.neuro
 from random import Random
-from Agent import Agent
+
+#from agent import Agent
 
 
 # 
@@ -15,13 +16,13 @@ class Selector(object):
     #  explorationfactor in percent
     explorationInPercent = 0
     epsilon = float()
-    agent = Agent()
+    #agent = Agent()
     random =  Random()
 
     def __init__(self, agent, epsilon):
         """ generated source for method __init__ """
         super(Selector, self).__init__()
-        self.agent = agent
+        #self.agent = agent
         self.random = Random()
         self.explorationInPercent = int(((100 * epsilon) - 1))
         self.epsilon = epsilon
@@ -58,7 +59,7 @@ class Selector(object):
         randomChance = self.random.nextInt(99)
         randomDecision = False
         if randomChance < self.explorationInPercent:
-            print "Agent Random-Move"
+            print "agent Random-Move"
             randomDecision = True
         #  1st count possible moves
         numberOfPossibleMoves = 0
@@ -81,8 +82,8 @@ class Selector(object):
                     #  copy and set possible move in a state
                     possibleMoves[possibilityCounter] = currentState.clone()
                     possibleMoves[possibilityCounter][i] = playerSign
-                    self.agent.setInput(Agent.stateToValues(currentState))
-                    fieldValue[possibilityCounter] = self.agent.responseValue()
+                    #self.agent.setInput(self.agent.stateToValues(currentState))
+                    #fieldValue[possibilityCounter] = self.agent.responseValue()
                 possibilityCounter += 1
             i += 1
         if randomDecision:
@@ -97,4 +98,5 @@ class Selector(object):
             return fieldNumbers[best]
         else:
             return -1
+
 

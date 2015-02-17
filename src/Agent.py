@@ -7,13 +7,17 @@
 #import java.io.ObjectInputStream
 #import java.io.ObjectOutputStream
 #import java.util.Random
+from _ast import Pass
+from copy import deepcopy
+import copy
 import math
 from random import Random
 
 from selector import Selector
-from _ctypes import Array
 
 
+#from selector import Selector
+#from _ctypes import Array
 # 
 #  * This is a agent for reinforcement learning with a artificial neural net.
 #  * 
@@ -35,20 +39,21 @@ class Agent(object):
     lastActivationOutput = []
     lastInput = []
     targetSignal = float()
-    alpha = 0.1
-    beta = 0.2
-    selector = Selector()
+    #alpha = 0.1
+    #beta = 0.2
+    #selector 
     random = Random()
 
     # 
     # 	 * intializer
     # 	 
     #@overloaded
-    @__init__.register(object)
-    def __init__(self):
-        """ generated source for method __init__ """
-        self.initializeNetWeights()
-        self.selector = Selector(self, 0.0)
+    #@__init__.register(object)
+    #def __init__(self):
+    #    """ generated source for method __init__ """
+    #    self.initializeNetWeights()
+    #    self.selector = Selector(self, 0.0)
+
 
     # 
     # 	 * intializer with parameter setting
@@ -57,8 +62,8 @@ class Agent(object):
     # 	 * @param beta
     # 	 * @param epsilon
     # 	 
-    @__init__.register(object, float, float, float)
-    def __init___0(self, alpha, beta, epsilon):
+    #@__init__.register(object, float, float, float)
+    def __init__(self, alpha = 0.1, beta = 0.2, epsilon = 0.0):
         """ generated source for method __init___0 """
         self.initializeNetWeights()
         self.selector = Selector(self, epsilon)
@@ -163,53 +168,85 @@ class Agent(object):
         """ generated source for method initializeNetWeights """
         self.random = Random()
         #  weight arrays init
-        self.weightsInputHidden = [None]*self.N_INPUT
-        self.weightsHiddenOutput = [None]*self.N_HIDDEN
+        #self.weightsInputHidden = [None]*self.N_INPUT
+        self.weightsInputHidden = [ [ 0.0 for i in range(self.N_HIDDEN) ] for j in range(self.N_INPUT) ]
+        #self.weightsHiddenOutput = [None]*self.N_HIDDEN
+        self.weightsHiddenOutput = [ [ 0.0 for i in range(self.N_OUTPUT) ] for j in range( self.N_HIDDEN) ]
         #  Random initialize
         #  input>hidden
-        i = 0
-        while i < self.N_INPUT:
-            j=0
-            while j < self.N_HIDDEN:
-                self.weightsInputHidden[i][j] = self.random.nextFloat() * 0.1
-                if j == self.N_HIDDEN - 1:
-                    self.weightsInputHidden[i][j] = 0
-                j += 1
-            i += 1
-        i = 0
-        while i < self.N_HIDDEN:
-            j=0
-            while j < self.N_OUTPUT:
-                self.weightsHiddenOutput[i][j] = self.random.nextFloat() * 0.1
-                j += 1
-            i += 1
+        #i = 0
+        #while i < self.N_INPUT:
+        #    j=0
+        #    while j < self.N_HIDDEN:
+        #        self.weightsInputHidden[i][j] = self.random.random() * 0.1
+        #        if j == self.N_HIDDEN - 1:
+        #            self.weightsInputHidden[i][j] = 0
+        #        j += 1
+        #    i += 1
+        #i = 0
+        for i in range(self.N_INPUT):
+            for j in range(self.N_HIDDEN):
+                self.weightsInputHidden[i][j] = self.random.random() * 0.1
+        
+        
+        
+        #while i < self.N_HIDDEN:
+        #    j=0
+        #    while j < self.N_OUTPUT:
+        #        self.weightsHiddenOutput[i][j] = self.random.random() * 0.1
+        #        j += 1
+        #    i += 1
+            
+        for i in range(self.N_HIDDEN):
+            for j in range(self.N_OUTPUT):
+                self.weightsHiddenOutput[i][j] = self.random.random() * 0.1
 
     def responseValue(self):
         """ generated source for method responseValue """
-        activationHidden = [None]*self.N_HIDDEN
-        bufferHidden = [None]*self.N_INPUT
-        i = 0
-        while i < self.N_HIDDEN:
-            j=0
-            while j < self.N_INPUT:
-                bufferHidden[j] = self.weightsInputHidden[j][i]
-                j += 1
+        #activationHidden = [None]*self.N_HIDDEN 
+        #bufferHidden = [None]*self.N_INPUT
+        activationHidden = [ 0.0 for i in range(self.N_HIDDEN) ]
+        bufferHidden = [ 0.0 for i in range(self.N_INPUT) ]
+        
+        #i = 0
+        #while i < self.N_HIDDEN:
+        #    j=0
+        #    while j < self.N_INPUT:
+        #        bufferHidden[j] = self.weightsInputHidden[j][i]
+        #        j += 1
+        #    if i == self.N_HIDDEN - 1:
+        #        activationHidden[i] = self.biasHiddenLayer
+        #    else:
+        #        activationHidden[i] = self.activationFunction(bufferHidden, self.lastInput)
+        #    i += 1
+   
+        for i in range(self.N_HIDDEN):
+            for j in range(self.N_INPUT):
+                    bufferHidden[j] = self.weightsInputHidden[j][i]
             if i == self.N_HIDDEN - 1:
                 activationHidden[i] = self.biasHiddenLayer
             else:
-                activationHidden[i] = self.activationFunction(bufferHidden, self.lastInput)
-            i += 1
-        activationOutput = [None]*self.N_OUTPUT
-        bufferOutput = [None]*self.N_HIDDEN
-        i = 0
-        while i < self.N_OUTPUT:
-            while j < self.N_HIDDEN:
+                activationHidden[i] = self.activationFunction(bufferHidden, self.lastInput) 
+        
+        activationOutput = [ 0.0 for i in range(self.N_OUTPUT)]
+        bufferOutput = [ 0.0 for i in range(self.N_HIDDEN)]
+        
+        #i = 0
+        #while i < self.N_OUTPUT:
+        #    while j < self.N_HIDDEN:
+        #        bufferOutput[j] = self.weightsHiddenOutput[j][i]
+        #        j += 1
+        #    activationOutput[i] = self.activationFunction(bufferOutput, activationHidden)
+        #    i += 1
+            
+        for i in range(self.N_OUTPUT):
+            for j in range(self.N_HIDDEN):
                 bufferOutput[j] = self.weightsHiddenOutput[j][i]
-                j += 1
             activationOutput[i] = self.activationFunction(bufferOutput, activationHidden)
-            i += 1
-        self.lastActivationOutput = activationOutput.clone()
-        self.lastActivationHidden = activationHidden.clone()
+                  
+            
+        self.lastActivationOutput = deepcopy(activationOutput)
+        self.lastActivationHidden = deepcopy(activationHidden)
         return activationOutput[0]
 
     def getOutputDelta(self, targetSignal, outputSignal):
@@ -218,33 +255,50 @@ class Agent(object):
 
     def learnByBackpropagation(self):
         """ generated source for method learnByBackpropagation """
-        bufferHiddenOutput = [None]*self.N_HIDDEN
-        bufferInputHidden = [None]*self.N_INPUT
+        #bufferHiddenOutput = [None]*self.N_HIDDEN
+        #bufferInputHidden = [None]*self.N_INPUT
+        bufferHiddenOutput = [ [ 0.0 for i in range(self.N_OUTPUT) ] for j in range(self.N_HIDDEN) ]
+        bufferInputHidden = [ [ 0.0 for i in range(self.N_HIDDEN) ] for j in range(self.N_INPUT)  ]    
         
-        k = 0
-        while k < self.N_OUTPUT:
-            deltaOutput=self.getOutputDelta(self.targetSignal, self.outputSignal)
-        
-            i=0
-            while i < self.N_HIDDEN:
+        for k in range(self.N_OUTPUT):
+            deltaOutput=self.getOutputDelta(self.targetSignal, self.lastActivationOutput[k])
+            
+            for i in range(self.N_HIDDEN):
                 bufferHiddenOutput[i][k] = self.calcWeightOutputHidden(self.weightsHiddenOutput[i][k], self.alpha, self.lastActivationHidden[i], deltaOutput, self.lastActivationOutput[k])
-                i += 1
-            k += 1
-        deltaOutputLayer = [None]*self.N_OUTPUT
+                
+        #k = 0
+        #while k < self.N_OUTPUT:
+        #    deltaOutput=self.getOutputDelta(self.targetSignal, self.outputSignal)
+        #
+        #    i=0
+        #    while i < self.N_HIDDEN:
+        #        bufferHiddenOutput[i][k] = self.calcWeightOutputHidden(self.weightsHiddenOutput[i][k], self.alpha, self.lastActivationHidden[i], deltaOutput, self.lastActivationOutput[k])
+        #        i += 1
+        #    k += 1  
+            
+        deltaOutputLayer = [ 0.0 for i in range(self.N_OUTPUT) ]
         
-        k = 0
-        while k < self.N_HIDDEN:
+        #k = 0
+        #while k < self.N_HIDDEN:
             
+            #delta_hidden=self.getDeltaForHiddenNeuron(deltaOutputLayer, self.weightsHiddenOutput[k])
+            
+            #i=0
+            #while i < self.N_INPUT:
+                #if not (k == self.N_HIDDEN - 1):
+                #    bufferInputHidden[i][k] = self.calcWeightHiddenInput(self.weightsInputHidden[i][k], self.beta, self.lastInput[i], delta_hidden)
+                #i += 1
+            #k += 1
+            
+        for k in range(self.N_HIDDEN):
             delta_hidden=self.getDeltaForHiddenNeuron(deltaOutputLayer, self.weightsHiddenOutput[k])
-            
-            i=0
-            while i < self.N_INPUT:
+     
+            for i in range(self.N_INPUT):
                 if not (k == self.N_HIDDEN - 1):
                     bufferInputHidden[i][k] = self.calcWeightHiddenInput(self.weightsInputHidden[i][k], self.beta, self.lastInput[i], delta_hidden)
-                i += 1
-            k += 1
-        self.weightsInputHidden = bufferInputHidden
-        self.weightsHiddenOutput = bufferHiddenOutput
+            
+        self.weightsInputHidden = deepcopy(bufferInputHidden)
+        self.weightsHiddenOutput = deepcopy(bufferHiddenOutput)
 
     def setTargetSignal(self, targetSignal):
         """ generated source for method setTargetSignal """
@@ -278,35 +332,39 @@ class Agent(object):
 
     def weightedSum(self, weights, activations):
         """ generated source for method weightedSum """
-        sum = 0.0
+        s = 0.0
         i = 0
-        while len(weights):
-            sum = sum + weights[i] * activations[i]
-            i += 1
-        return sum
+        #while len(weights):
+        for i in range(len(weights)):
+            s = s + weights[i] * activations[i]
+            #i += 1
+        return s
 
     def printOutWeightTable(self):
         """ generated source for method printOutWeightTable """
         builder = ""
         builder.append("weights_input_hidden" + "\n")
-        i = 0
-        while len(self.weightsInputHidden):
-            j=0
-            while len(self.weightsInputHidden[i]):
-                builder.append("[" + self.weightsInputHidden[i][j] + "]")
-                j += 1
-            builder.append("\n")
-            i += 1
+        #i = 0
+        #while len(self.weightsInputHidden):
+        #    j=0
+        #    while len(self.weightsInputHidden[i]):
+        #        builder.append("[" + self.weightsInputHidden[i][j] + "]")
+        #        j += 1
+        #    builder.append("\n")
+        #    i += 1
+        builder.append("\n")
+        builder.append(str(self.weightsInputHidden))
         builder.append("weights_hidden_output" + "\n")
         
-        i = 0
-        while len(self.weightsHiddenOutput):
-            j=0
-            while len(self.weightsHiddenOutput[i]):
-                builder.append("[" + self.weightsHiddenOutput[i][j] + "]")
-                j += 1
-            builder.append("\n")
-            i += 1
+        #i = 0
+        #while len(self.weightsHiddenOutput):
+        #    j=0
+        #    while len(self.weightsHiddenOutput[i]):
+        #        builder.append("[" + self.weightsHiddenOutput[i][j] + "]")
+        #        j += 1
+        #    builder.append("\n")
+        #    i += 1
+        builder.append(str(self.weightsHiddenOutput))
         print builder.__str__()
 
     def saveNetToFile(self, filePath):

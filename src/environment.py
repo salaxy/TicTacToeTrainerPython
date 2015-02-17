@@ -23,7 +23,7 @@ class Environment(object):
     # 	 
     def __init__(self):
         """ generated source for method __init__ """
-        super(Environment, self).__init__()
+        #super(Environment, self).__init__()
         self.initState()
 
     # 
@@ -235,7 +235,7 @@ class Environment(object):
                 else:
                     return -1
             else:
-                #  Agent was O
+                #  agent was O
                 if self.lastPlayer == self.PLAYER_SIGN_O:
                     return 1
                 else:
