@@ -6,12 +6,14 @@
 #  * 
 #  * @author Andy Klay 2014
 #  
+from time import sleep
+
 from agent import Agent
 
 
 class TestANN(object):
     """ generated source for class TestANN """
-    LEARN_ROUNDS_AGENT = 100000
+    LEARN_ROUNDS_AGENT = 1000
     agent = Agent(0.05, 0.05, 0.0) 
 
     # 
@@ -40,10 +42,10 @@ class TestANN(object):
         cls.agent.initTestInput()
         TestANN.learnV( last_input, toLearn)
         print "\n"
-        print "Soll: \n"
-        print "[" + toLearn + "] ",
-        print "KNN: \n"
-        print "[" + TestANN.v( last_input, + "] ")
+        print "Soll: "
+        print "[" + str(toLearn) + "] "
+        print "KNN: "
+        print "[" + str(TestANN.v( last_input)) + "] "
 
     # 
     # 	 * aksing agent for a value
@@ -77,6 +79,7 @@ class TestANN(object):
             cls.agent.learnByBackpropagation()
             print cls.v(state)
             k += 1
+            #sleep(0.1)
 
 
 if __name__ == '__main__':
