@@ -16,7 +16,7 @@ if __name__ == '__main__':
     player = RandomPlayer()
     agent = Agent()
     trainer = TemporalDifferenceTrainer(game, agent, player)
-    trainer.teachPassiveRandom(10)
+    trainer.teachPassiveRandom(10000)
     
     
     trainer.teachActiveAndSaveStatistics("path", 10000, 0.0, 0.0, 0.0, 0.0, 0.0, True, False, False)

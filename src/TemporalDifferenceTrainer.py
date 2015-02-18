@@ -6,6 +6,8 @@
 from copy import deepcopy
 import math
 from nt import write
+import os
+import string
 
 from agent import Agent
 from environment import Environment
@@ -48,7 +50,7 @@ class TemporalDifferenceTrainer(object):
     wincounter = int()
     remiscounter = int()
     #lineSeparator = System.getProperty("line.separator")
-    lineSeparator = "\n"
+    lineSeparator = ""
 
     # 
     # 	 * intializer without parameter setting and using gamma 1.0
@@ -85,6 +87,12 @@ class TemporalDifferenceTrainer(object):
         self.player = player
         self.gamma = gamma
         #  this.lambda = lambda;
+        
+        if(os.name =="nt"):
+            print " windows detected"
+            self.lineSeparator = "\n"
+        if(os.name == "posix"):
+            self.lineSeparator = "\r\n"
 
     # 
     # 	 * Agent will be trained by a randomplayer
@@ -392,47 +400,42 @@ class TemporalDifferenceTrainer(object):
             
         #output = ""
         output = "name: " + name + self.lineSeparator
-        output += "numberOfGames: " + numberOfGames + self.lineSeparator
-        output += "agentPlayFirst: " + agentPlayFirst + self.lineSeparator
-        output += "alpha: " + alphaAtStart + self.lineSeparator
-        output += "beta: " + betaAtStart + self.lineSeparator
-        output += "epsilon: " + epsilonAtStart + self.lineSeparator
-        output += "gamma: " + gamma + self.lineSeparator
-        output += "lambda: " + lambda_ + self.lineSeparator
+        output += "numberOfGames: " + str(numberOfGames) + self.lineSeparator
+        output += "agentPlayFirst: " + str(agentPlayFirst) + self.lineSeparator
+        output += "alpha: " + str(alphaAtStart) + self.lineSeparator
+        output += "beta: " + str(betaAtStart) + self.lineSeparator
+        output += "epsilon: " + str(epsilonAtStart) + self.lineSeparator
+        output += "gamma: " + str(gamma) + self.lineSeparator
+        output += "lambda: " + str(lambda_) + self.lineSeparator
         output += "winfactors: " + self.lineSeparator
         
-        i = 0
-        
-        while len(self.winFactorTable):
-            output += self.winFactorTable[i] + self.lineSeparator
-            i += 1
+        for i in range(len(self.winFactorTable)):
+            output += str(self.winFactorTable[i]) + self.lineSeparator
         output += self.lineSeparator
         output += "remisFactor:"
-        output += self.remisFactorTable[len(self.remisFactorTable)] + self.lineSeparator
-        print output.__str__()
+        output += str(self.remisFactorTable[len(self.remisFactorTable)-1]) + self.lineSeparator
+        print output
+        
         #  save winning rate to textfile
-        self.writeStringToFile(name + "_TestWith" + numberOfGames + agentPlayFirst + ".txt", output.__str__().replace(".", ","))
+        self.writeStringToFile(name + "_TestWith" + str(numberOfGames) + str(agentPlayFirst) + ".txt", string.replace(output,'.',','))
+        
         #  save parameter tables to textfiles
-        if isLearning:
+        if isLearning:    
+            output = ""
+            for i in range(len(self.alphaTable)):
+                output += str(self.alphaTable[i]) + self.lineSeparator
+            self.writeStringToFile(name + "_AlphaTable" + str(numberOfGames) + ".txt", string.replace(output,'.',','))
             
             output = ""
-            while len(self.alphaTable):
-                output += self.alphaTable[i] + self.lineSeparator
-                i += 1
-            self.writeStringToFile(name + "_AlphaTable" + numberOfGames + ".txt", output.__str__().replace(".", ","))
+            for i in range(len(self.betaTable)):
+                output += str(self.betaTable[i]) + self.lineSeparator
+            self.writeStringToFile(name + "_BetaTable" + str(numberOfGames) + ".txt", string.replace(output,'.',','))
             
             output = ""
-            while len(self.betaTable):
-                output += self.betaTable[i] + self.lineSeparator
-                i += 1
-            self.writeStringToFile(name + "_BetaTable" + numberOfGames + ".txt", output.__str__().replace(".", ","))
-            
-            output = ""
-            while len(self.epsilonTable):
-                output += self.epsilonTable[i] + self.lineSeparator
-                i += 1
+            for i in range(len(self.epsilonTable)):
+                output += str(self.epsilonTable[i]) + self.lineSeparator
                 
-            self.writeStringToFile(name + "_EpsilonTable" + numberOfGames + ".txt", output.__str__().replace(".", ","))
+            self.writeStringToFile(name + "_EpsilonTable" + str(numberOfGames) + ".txt", string.replace(output,'.',','))
 
     # 
     # 	 * epsilonStart fall down through this function from start value againt zero
@@ -444,7 +447,7 @@ class TemporalDifferenceTrainer(object):
     # 	 
     def calculateNextEpsilon(self, n, epsilonStart):
         """ generated source for method calculateNextEpsilon """
-        return float((math.pow(0.96, (n / 100) + 1) * epsilonStart))
+        return float((math.pow(0.96, (n / 100.0) + 1) * epsilonStart))
 
     # 
     # 	 * betaAtStart fall down through this function from start value againt zero
@@ -456,7 +459,7 @@ class TemporalDifferenceTrainer(object):
     # 	 
     def calculateNextBeta(self, n, betaAtStart):
         """ generated source for method calculateNextBeta """
-        return float((math.pow(0.98, (n / 100) + 1) * betaAtStart))
+        return float((math.pow(0.98, (n / 100.0) + 1) * betaAtStart))
 
     # 
     # 	 * alphaAtStart fall down through this function from start value againt zero
@@ -468,7 +471,7 @@ class TemporalDifferenceTrainer(object):
     # 	 
     def calculateNextAlpha(self, n, alphaAtStart):
         """ generated source for method calculateNextAlpha """
-        return float((math.pow(0.98, (n / 100) + 1) * alphaAtStart))
+        return float((math.pow(0.98, (n / 100.0) + 1) * alphaAtStart))
 
     # 
     # 	 * calculates the statistic rates
