@@ -13,10 +13,8 @@ import copy
 import math
 from random import Random
 
-from selector import Selector
 
-
-#from selector import Selector
+#from RLselector import Selector
 #from _ctypes import Array
 # 
 #  * This is a agent for reinforcement learning with a artificial neural net.
@@ -41,8 +39,10 @@ class Agent(object):
     targetSignal = float()
     #alpha = 0.1
     #beta = 0.2
-    #selector 
+    #RLselector 
     random = Random()
+    explorationInPercent=0
+    epsilon = float()
 
     # 
     # 	 * intializer
@@ -52,7 +52,7 @@ class Agent(object):
     #def __init__(self):
     #    """ generated source for method __init__ """
     #    self.initializeNetWeights()
-    #    self.selector = Selector(self, 0.0)
+    #    self.RLselector = Selector(self, 0.0)
 
 
     # 
@@ -66,10 +66,13 @@ class Agent(object):
     def __init__(self, alpha = 0.1, beta = 0.2, epsilon = 0.0):
         """ generated source for method __init___0 """
         self.initializeNetWeights()
-        self.selector = Selector(self, epsilon)
+        #self.selector = Selector(self, epsilon)
+        
         self.alpha = alpha
         self.beta = beta
-
+        
+        self.epsilon = epsilon
+        self.explorationInPercent = int(((100 * epsilon) - 1))
     # 
     # 	 * set epsilon parameter, epsilon is the eploration rate of the agent
     # 	 * 
@@ -77,7 +80,9 @@ class Agent(object):
     # 	 
     def setEpsilon(self, epsilon):
         """ generated source for method setEpsilon """
-        self.selector.setEpsilon(epsilon)
+        #self.selector.setEpsilon(epsilon)
+        self.epsilon = epsilon
+        self.explorationInPercent = int(((100 * epsilon) - 1))
 
     # 
     # 	 * get paramter alpha, alpha is the learning rate of ANN between input and
@@ -412,7 +417,59 @@ class Agent(object):
             #i += 1
         return values
 
+    #def getNextDecision(self, currentState, unoccupiedFieldSign, playerSign):
+    #    """ generated source for method getNextDecision """
+    #    return self.selector.getNextDecision(currentState, unoccupiedFieldSign, playerSign)
+
+        # 
+    #      * Calculate next decision by greedy strategy
+    #      * 
+    #      * @param currentState
+    #      * @param unoccupiedFieldSign
+    #      * @return int field number to choose, error value = -1
+    #      
     def getNextDecision(self, currentState, unoccupiedFieldSign, playerSign):
         """ generated source for method getNextDecision """
-        return self.selector.getNextDecision(currentState, unoccupiedFieldSign, playerSign)
-
+        #  build in expolration in depency of a factor
+        randomChance = self.random.nextInt(99)
+        randomDecision = False
+        if randomChance < self.explorationInPercent:
+            print "RLagent Random-Move"
+            randomDecision = True
+        #  1st count possible moves
+        numberOfPossibleMoves = 0
+        i = 0
+        while len(currentState):
+            if currentState[i] == unoccupiedFieldSign:
+                numberOfPossibleMoves += 1
+            i += 1
+        possibleMoves = [None]*numberOfPossibleMoves
+        fieldValue = [None]*numberOfPossibleMoves
+        fieldNumbers = [None]*numberOfPossibleMoves
+        possibilityCounter = 0
+        #  2nd which moves are possible
+        #  3rd get all values for all possible moves
+        i = 0
+        while len(currentState):
+            if currentState[i] == unoccupiedFieldSign:
+                fieldNumbers[possibilityCounter] = i
+                if not randomDecision:
+                    #  copy and set possible move in a state
+                    possibleMoves[possibilityCounter] = currentState.clone()
+                    possibleMoves[possibilityCounter][i] = playerSign
+                    self.agent.setInput(self.agent.stateToValues(currentState))
+                    fieldValue[possibilityCounter] = self.agent.responseValue()
+                possibilityCounter += 1
+            i += 1
+        if randomDecision:
+            return fieldNumbers[self.random.nextInt(possibilityCounter)]
+        best = 0
+        i = 0
+        while len(possibleMoves):
+            if fieldValue[i] >= fieldValue[best]:
+                best = i
+            i += 1
+        if len(possibleMoves):
+            return fieldNumbers[best]
+        else:
+            return -1

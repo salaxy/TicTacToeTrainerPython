@@ -2,15 +2,17 @@
 """ generated source for module TemporalDifferenceTrainer """
 # package: de.fhb.infm.knn.neuro
 #import java.io.BufferedWriter
-from agent import Agent
+
 from copy import deepcopy
-from environment import Environment
-#from randomPlayer import RandomPlayer
-from player import RandomPlayer
 import math
 from nt import write
 
+from agent import Agent
+from environment import Environment
+from player import RandomPlayer
 
+
+#from randomPlayer import RandomPlayer
 #import java.io.File
 #import java.io.FileWriter
 #import java.io.IOException
