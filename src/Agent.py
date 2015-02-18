@@ -133,13 +133,14 @@ class Agent(object):
     # 	 * 
     # 	 * @param input
     # 	 
-    def setInput(self, input):
+    def setInput(self, inputVector):
         """ generated source for method setInput """
         self.lastInput = [None]*self.N_INPUT
-        i = 0
-        while i < len(self.lastInput):
-            self.lastInput[i] = input[i]
-            i += 1
+        #i = 0
+        #while i < len(self.lastInput):
+        for i in range(len(self.lastInput)-1):
+            self.lastInput[i] = inputVector[i]
+            #i += 1
         #  BIAS neuron
         self.lastInput[self.N_INPUT - 1] = self.biasInputLayer
 
@@ -399,15 +400,16 @@ class Agent(object):
         """ generated source for method stateToValues """
         values = [None]*9
         
-        i = 0
-        while len(state):
+        #i = 0
+        #while len(state):
+        for i in range(len(state)):
             if state[i]=='X':
                 values[i] = 1.0
             elif state[i]=='O':
                 values[i] = -1.0
             else:
                 values[i] = 0.0
-            i += 1
+            #i += 1
         return values
 
     def getNextDecision(self, currentState, unoccupiedFieldSign, playerSign):

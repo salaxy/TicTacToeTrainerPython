@@ -7,9 +7,9 @@
 
 #import de.fhb.infm.knn.trainer.worldmodel.Environment
 
-#import de.fhb.infm.knn.trainer.worldmodel.RandomPlayer
+#import de.fhb.infm.knn.trainer.worldmodel.player
 
-from RandomPlayer import RandomPlayer
+import player.RandomPlayer
 from TemporalDifferenceTrainer import TemporalDifferenceTrainer
 from agent import Agent
 from environment import Environment
@@ -17,7 +17,7 @@ from environment import Environment
 class StartTests(object):
     """ generated source for class StartTests """
     game = Environment()
-    player = RandomPlayer()
+    player = player()
     agent = Agent()
     trainer = TemporalDifferenceTrainer(game, agent, player)
 

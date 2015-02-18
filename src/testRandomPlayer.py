@@ -3,7 +3,7 @@ Created on 17.02.2015
 
 @author: Salaxy
 '''
-from RandomPlayer import RandomPlayer
+import player.RandomPlayer
 
 
 if __name__ == '__main__':
@@ -11,7 +11,7 @@ if __name__ == '__main__':
     
     fields = ['X','X','O','-','-','X','O','O','-']
     
-    r = RandomPlayer()
+    r = player()
     
     for i in range(50):
         num = r.getMove(fields, 'O')

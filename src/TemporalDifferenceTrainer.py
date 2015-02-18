@@ -2,13 +2,13 @@
 """ generated source for module TemporalDifferenceTrainer """
 # package: de.fhb.infm.knn.neuro
 #import java.io.BufferedWriter
+from agent import Agent
 from copy import deepcopy
+from environment import Environment
+#from randomPlayer import RandomPlayer
+from player import RandomPlayer
 import math
 from nt import write
-
-import RandomPlayer
-from agent import Agent
-from environment import Environment
 
 
 #import java.io.File
@@ -94,14 +94,17 @@ class TemporalDifferenceTrainer(object):
         """ generated source for method teachPassiveRandom """
         i = 0
         while i < numberOfGames:
-            print "Play game nr.: " + i
+            print "Play game nr.: " + str(i)
             self.initAll()
             #  1. Play a game
             #  remember all rewards and states
             self.playRandom()
             #  2. Do TD-Learning!
             #  3. Calculate neural net!
+            #bis hier hin is alles gut ^^
+            print "begin learning"
             self.doTDZeroLearning()
+            print "end learning"
             #  4. prepare next game
             self.game.renewState()
             i += 1
