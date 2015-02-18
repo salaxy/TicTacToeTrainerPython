@@ -187,12 +187,10 @@ class Environment(object):
     def isFull(self):
         """ generated source for method isFull """
         value = True
-        i = 0
-        while len(self.state):
+        for i in range(len(self.state)):
             if self.state[i] == '-':
                 value = value and False
                 break
-            i += 1
         return value
 
     # 

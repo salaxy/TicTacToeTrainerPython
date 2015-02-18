@@ -176,14 +176,22 @@ class TemporalDifferenceTrainer(object):
         t = self.stateCounter - 1
         while t >= 0:
             n = self.stateCounter - t
+            
             #  TD(0)-Algortithmn one-step TD-Error
             v_st = self.v(s[t])+ self.alpha(n) * (r[t + 1] + self.gamma * self.v(s[t+1]) - self.v(s[t]))
             self.valueTable[t] = self.valueTable[t] + self.alpha(n) * (r[t + 1] + self.gamma * self.valueTable[t + 1] - self.valueTable[t])
             self.learnV(self.lastStates[t], v_st)
+            print str(v_st)
+            print str(r[t + 1]) 
+            print str(self.valueTable[t])
+            print str(self.alpha(n))
+            print str(t)
             t -= 1
+            
         #  learn end reward
         self.learnV(self.lastStates[self.stateCounter], r[self.stateCounter])
         self.valueTable[self.stateCounter] = r[self.stateCounter]
+        
         #  print out all rewards
         print "\n"
         print "Rewards: \n"
@@ -193,21 +201,23 @@ class TemporalDifferenceTrainer(object):
             print "[" + str(self.lastRewards[i]) + "] ",
             i += 1
         print "\n"
-        print "Sollwerte: \n"
         
+        print "Sollwerte: \n"
         #  print out all values
         i = 0
         while i <= self.stateCounter:
             print "[" + str(self.valueTable[i]) + "] ",
             i += 1
         print "\n"
+        
         print "KNN: \n"
         #  gebe alle Values aus
         i = 0
         while i <= self.stateCounter:
-            print "[" + str(self.v(s[i])) + "] "
+            print "[" + str(self.v(s[i])) + "] ",
             i += 1
         print "\n"
+        
         self.agent.printOutWeightTable()
         print "\n"
 
@@ -249,12 +259,13 @@ class TemporalDifferenceTrainer(object):
     # 	 
     def alpha(self, n):
         """ generated source for method alpha """
-        return 1 / (n + 1)
+        return 1.0 / (n + 1.0)
 
     def playRandom(self):
         """ generated source for method playRandom """
         counter = 0
         while not self.game.isFinished():
+            print "begin round A"
             #  Player X begins
             nextMoveX = self.player.getMove(self.game.getState(),'X') 
             self.game.moveX(nextMoveX)
@@ -269,8 +280,11 @@ class TemporalDifferenceTrainer(object):
                 break
             counter += 1
             
+            print "end round A"
+            
             #  ****************************************************************************
             #  Player O follows
+            print "begin round B"
             nextMoveO = self.player.getMove(self.game.getState(),'O') 
             self.game.moveO(nextMoveO)
             #  put it out to console
@@ -285,6 +299,8 @@ class TemporalDifferenceTrainer(object):
             if self.game.isFinished():
                 break
             counter += 1
+            
+            print "end round B"
             
         #  count how many states in this game recently has existed
         self.stateCounter = counter
@@ -543,12 +559,9 @@ class TemporalDifferenceTrainer(object):
     def writeStringToFile(self, filePath, content):
         """ generated source for method writeStringToFile """
         
-        
         f = open(filePath, 'w')
         print "attention writing dends on os"
         f.write(content)
-        
-        
         
         #try:
         #    writer.write(content)

@@ -57,7 +57,7 @@ class RandomPlayer(object):
         #  erzeuge randomzahl und teste ob Feld frei ist.
         while not cancel:
             #decision = random.nextInt(9)
-            decision = random.randrange(1,9,1)
+            decision = random.randrange(0,9,1)
             #print decision
             if fields[decision] == '-':
                 cancel = True
