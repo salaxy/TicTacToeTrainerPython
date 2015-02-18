@@ -48,6 +48,14 @@ class TestANN(object):
         print "[" + str(TestANN.v( last_input)) + "] "
         
         cls.agent.printOutWeightTable()
+        
+        cls.agent.saveNetToFile("test123")
+        cls.agent.printOutWeightTable()
+        
+        print "agent2"
+        agent2 = Agent()
+        agent2.loadNetFromFile("test123")
+        agent2.printOutWeightTable()
 
     # 
     # 	 * aksing agent for a value

@@ -568,8 +568,3 @@ class TemporalDifferenceTrainer(object):
         print "attention writing dends on os"
         f.write(content)
         
-        #try:
-        #    writer.write(content)
-        #    writer.close()
-        #except IOException as e:
-        #    print e.getMessage()

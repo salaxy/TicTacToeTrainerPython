@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 from copy import deepcopy
 import math
+import pickle
 from random import Random
+
 
 # 
 #  * This is a agent for reinforcement learning with a artificial neural net.
@@ -371,21 +373,17 @@ class Agent(object):
 
         print b
 
-    def saveNetToFile(self, filePath):
-        """ generated source for method saveNetToFile """
-        #fs = FileOutputStream(filePath)
-        #os = ObjectOutputStream(fs)
-        #os.writeObject(self.weightsInputHidden)
-        #os.writeObject(self.weightsHiddenOutput)
-        #os.close()
+    def saveNetToFile(self, filePath):      
+        f = open(filePath, "w+b")
+        pickle.dump(self.weightsHiddenOutput, f)
+        pickle.dump(self.weightsInputHidden, f)
+        f.close()
 
-    def loadNetFromFile(self, filePath):
-        """ generated source for method loadNetFromFile """
-        #fs = FileInputStream(filePath)
-        #is_ = ObjectInputStream(fs)
-        #self.weightsInputHidden = float(is_.readObject())
-        #self.weightsHiddenOutput = float(is_.readObject())
-        #is_.close()
+    def loadNetFromFile(self, filePath):        
+        f = open(filePath)
+        self.weightsHiddenOutput = pickle.load(f)
+        self.weightsInputHidden = pickle.load(f)
+        f.close()
 
     @classmethod
     def stateToValues(cls, state):
