@@ -503,10 +503,10 @@ class TemporalDifferenceTrainer(object):
                 #  nextMoveA = player.doRandomMove(game.getState(), 'X');
                 #  game.moveX(nextMoveA);
             #  put it out to console
-            print "X move: " + nextMoveA
+            print "X move: " + str(nextMoveA)
             print self.game.stateToString()
             #  push state and reward to trainer
-            self.getLastStates()[counter] = self.game.getState().clone()
+            self.getLastStates()[counter] = deepcopy(self.game.getState())
             self.getLastRewards()[counter] = self.game.getReward()
             if self.game.isFinished():
                 break
@@ -517,9 +517,9 @@ class TemporalDifferenceTrainer(object):
             else:
                 nextMoveB = self.agent.getNextDecision(self.game.getState(), '-', 'X')
                 self.game.moveX(nextMoveB)
-            print "O move: " + nextMoveB
+            print "O move: " + str(nextMoveB)
             print self.game.stateToString()
-            self.getLastStates()[counter] = self.game.getState().clone()
+            self.getLastStates()[counter] = deepcopy(self.game.getState())
             self.getLastRewards()[counter] = self.game.getReward()
             if self.game.isFinished():
                 break
