@@ -543,7 +543,7 @@ class TemporalDifferenceTrainer(object):
         
         f = open(filePath, 'w')
         print "attention writing dends on os"
-        write(content)
+        f.write(content)
         
         
         

@@ -1,13 +1,18 @@
 #!/usr/bin/env python
 """ generated source for module StartTests """
 # package: de.fhb.infm.knn.trainer
-import de.fhb.infm.knn.neuro.Agent
+#import de.fhb.infm.knn.neuro.Agent
 
-import de.fhb.infm.knn.neuro.TemporalDifferenceTrainer
+#import de.fhb.infm.knn.neuro.TemporalDifferenceTrainer
 
-import de.fhb.infm.knn.trainer.worldmodel.Environment
+#import de.fhb.infm.knn.trainer.worldmodel.Environment
 
-import de.fhb.infm.knn.trainer.worldmodel.RandomPlayer
+#import de.fhb.infm.knn.trainer.worldmodel.RandomPlayer
+
+from RandomPlayer import RandomPlayer
+from TemporalDifferenceTrainer import TemporalDifferenceTrainer
+from agent import Agent
+from environment import Environment
 
 class StartTests(object):
     """ generated source for class StartTests """
@@ -106,8 +111,8 @@ class StartTests(object):
         # 		
         # 		testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_first.net", 10000, true);
         # 		testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_secound.net", 10000, true);
-        testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_first.net", 10000, False)
-        testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_secound.net", 10000, False)
+        cls.testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_first.net", 10000, False)
+        cls.testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_secound.net", 10000, False)
         # 		testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1.net", 10000, false);
 
     # 
@@ -122,9 +127,9 @@ class StartTests(object):
     @classmethod
     def trainOfflineAndTest(cls, numberOfGames, alpha, beta, gamma):
         """ generated source for method trainOfflineAndTest """
-        filePath = trainOfflineRandomAndSave(numberOfGames, alpha, beta, gamma)
-        testAgentFromFileWithOutLearning(filePath, numberOfGames, True)
-        testAgentFromFileWithOutLearning(filePath, numberOfGames, False)
+        filePath = cls.trainOfflineRandomAndSave(numberOfGames, alpha, beta, gamma)
+        cls.testAgentFromFileWithOutLearning(filePath, numberOfGames, True)
+        cls.testAgentFromFileWithOutLearning(filePath, numberOfGames, False)
 
     # 
     # 	 * train an agent offline by numberofgames, save it and test it by the same
