@@ -1,21 +1,8 @@
 #!/usr/bin/env python
-""" generated source for module Agent """
-# package: de.fhb.infm.knn.neuro
-#import java.io.FileInputStream
-#import java.io.FileOutputStream
-#import java.io.IOException
-#import java.io.ObjectInputStream
-#import java.io.ObjectOutputStream
-#import java.util.Random
-from _ast import Pass
 from copy import deepcopy
-import copy
 import math
 from random import Random
 
-
-#from RLselector import Selector
-#from _ctypes import Array
 # 
 #  * This is a agent for reinforcement learning with a artificial neural net.
 #  * 
@@ -417,11 +404,7 @@ class Agent(object):
             #i += 1
         return values
 
-    #def getNextDecision(self, currentState, unoccupiedFieldSign, playerSign):
-    #    """ generated source for method getNextDecision """
-    #    return self.selector.getNextDecision(currentState, unoccupiedFieldSign, playerSign)
 
-        # 
     #      * Calculate next decision by greedy strategy
     #      * 
     #      * @param currentState
@@ -431,45 +414,49 @@ class Agent(object):
     def getNextDecision(self, currentState, unoccupiedFieldSign, playerSign):
         """ generated source for method getNextDecision """
         #  build in expolration in depency of a factor
-        randomChance = self.random.nextInt(99)
+        randomChance = self.random.randrange(0,100,1)
         randomDecision = False
         if randomChance < self.explorationInPercent:
-            print "RLagent Random-Move"
+            print "Agent Random-Move"
             randomDecision = True
+            
         #  1st count possible moves
         numberOfPossibleMoves = 0
-        i = 0
-        while len(currentState):
+        #i = 0
+        #while len(currentState):
+        for i in range(len(currentState)):
             if currentState[i] == unoccupiedFieldSign:
                 numberOfPossibleMoves += 1
-            i += 1
+        #    i += 1
         possibleMoves = [None]*numberOfPossibleMoves
         fieldValue = [None]*numberOfPossibleMoves
         fieldNumbers = [None]*numberOfPossibleMoves
         possibilityCounter = 0
+        
         #  2nd which moves are possible
         #  3rd get all values for all possible moves
-        i = 0
-        while len(currentState):
+        #i = 0
+        #while len(currentState):
+        for i in range(len(currentState)):
             if currentState[i] == unoccupiedFieldSign:
                 fieldNumbers[possibilityCounter] = i
                 if not randomDecision:
                     #  copy and set possible move in a state
-                    possibleMoves[possibilityCounter] = currentState.clone()
+                    possibleMoves[possibilityCounter] = deepcopy(currentState)
                     possibleMoves[possibilityCounter][i] = playerSign
-                    self.agent.setInput(self.agent.stateToValues(currentState))
-                    fieldValue[possibilityCounter] = self.agent.responseValue()
+
+                    fieldValue[possibilityCounter] = self.responseValue()
                 possibilityCounter += 1
-            i += 1
+            #i += 1
         if randomDecision:
             return fieldNumbers[self.random.nextInt(possibilityCounter)]
+        
         best = 0
-        i = 0
-        while len(possibleMoves):
+        for i in range(len(possibleMoves)):
             if fieldValue[i] >= fieldValue[best]:
                 best = i
-            i += 1
-        if len(possibleMoves):
+            #i += 1
+        if len(possibleMoves)>0:
             return fieldNumbers[best]
         else:
             return -1

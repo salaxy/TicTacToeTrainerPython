@@ -357,7 +357,7 @@ class TemporalDifferenceTrainer(object):
         #  trainer.setLambda(lambda);
         i = 0
         while i < numberOfGames:
-            print "Play game nr.: " + i
+            print "Play game nr.: " + str(i)
             self.initAll()
             #  1. Play a game
             #  remember all rewards and states
