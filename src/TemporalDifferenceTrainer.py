@@ -2,17 +2,20 @@
 """ generated source for module TemporalDifferenceTrainer """
 # package: de.fhb.infm.knn.neuro
 #import java.io.BufferedWriter
+from copy import deepcopy
+import math
+from nt import write
+
+import RandomPlayer
+from agent import Agent
+from environment import Environment
+
 
 #import java.io.File
-
 #import java.io.FileWriter
-
 #import java.io.IOException
-
 #import de.fhb.infm.knn.trainer.worldmodel.Environment
-
 #import de.fhb.infm.knn.trainer.worldmodel.RandomPlayer
-
 # 
 #  * TD Trainer for a reinforcement agent
 #  * 
@@ -42,7 +45,8 @@ class TemporalDifferenceTrainer(object):
     betaTable = []
     wincounter = int()
     remiscounter = int()
-    lineSeparator = System.getProperty("line.separator")
+    #lineSeparator = System.getProperty("line.separator")
+    lineSeparator = "\n"
 
     # 
     # 	 * intializer without parameter setting and using gamma 1.0
@@ -51,15 +55,15 @@ class TemporalDifferenceTrainer(object):
     # 	 * @param agent
     # 	 * @param player
     # 	 
-    @overloaded
-    def __init__(self, game, agent, player):
-        """ generated source for method __init__ """
-        super(TemporalDifferenceTrainer, self).__init__()
-        self.game = game
-        self.agent = agent
-        self.player = player
-        self.gamma = 1.0
-        #  this.lambda = 1.0f;
+    #@overloaded
+    #def __init__(self, game, agent, player):
+    #    """ generated source for method __init__ """
+    #    super(TemporalDifferenceTrainer, self).__init__()
+    #    self.game = game
+    #    self.agent = agent
+    #    self.player = player
+    #    self.gamma = 1.0
+    #    #  this.lambda = 1.0f;
 
     # 
     # 	 * intializer with parameter setting
@@ -69,8 +73,8 @@ class TemporalDifferenceTrainer(object):
     # 	 * @param player
     # 	 * @param gamma
     # 	 
-    @__init__.register(object, Environment, Agent, RandomPlayer, float)
-    def __init___0(self, game, agent, player, gamma):
+    #@__init__.register(object, Environment, Agent, RandomPlayer, float)
+    def __init__(self, game, agent, player, gamma = 1.0):
         """ generated source for method __init___0 """
         #  , float lambda) {
         super(TemporalDifferenceTrainer, self).__init__()
@@ -91,13 +95,13 @@ class TemporalDifferenceTrainer(object):
         i = 0
         while i < numberOfGames:
             print "Play game nr.: " + i
-            initAll()
+            self.initAll()
             #  1. Play a game
             #  remember all rewards and states
-            playRandom()
+            self.playRandom()
             #  2. Do TD-Learning!
             #  3. Calculate neural net!
-            doTDZeroLearning()
+            self.doTDZeroLearning()
             #  4. prepare next game
             self.game.renewState()
             i += 1
@@ -161,39 +165,44 @@ class TemporalDifferenceTrainer(object):
         """ generated source for method doTDZeroLearning """
         r = self.lastRewards
         s = self.lastStates
+        
         #  1. Fuehre das TD-Learning durch!
         #  Nicht-Inkrementeller TD-Lambda-Algortihmus
         #  fuer t=n-1 ... 0
         #  deduzierendes Lernen! Rueckswaerts vom Reward
         t = self.stateCounter - 1
         while t >= 0:
+            n = self.stateCounter - t
             #  TD(0)-Algortithmn one-step TD-Error
-            self.valueTable[t] = self.valueTable[t] + alpha(n) * (r[t + 1] + self.gamma * self.valueTable[t + 1] - self.valueTable[t])
-            learnV(self.lastStates[t], v_st)
+            v_st = self.v(s[t])+ self.alpha(n) * (r[t + 1] + self.gamma * self.v(s[t+1]) - self.v(s[t]))
+            self.valueTable[t] = self.valueTable[t] + self.alpha(n) * (r[t + 1] + self.gamma * self.valueTable[t + 1] - self.valueTable[t])
+            self.learnV(self.lastStates[t], v_st)
             t -= 1
         #  learn end reward
-        learnV(self.lastStates[self.stateCounter], r[self.stateCounter])
+        self.learnV(self.lastStates[self.stateCounter], r[self.stateCounter])
         self.valueTable[self.stateCounter] = r[self.stateCounter]
         #  print out all rewards
         print "\n"
         print "Rewards: \n"
+        
         i = 0
         while i <= self.stateCounter:
-            print "[" + self.lastRewards[i] + "] ",
+            print "[" + str(self.lastRewards[i]) + "] ",
             i += 1
         print "\n"
         print "Sollwerte: \n"
+        
         #  print out all values
         i = 0
         while i <= self.stateCounter:
-            print "[" + self.valueTable[i] + "] ",
+            print "[" + str(self.valueTable[i]) + "] ",
             i += 1
         print "\n"
         print "KNN: \n"
         #  gebe alle Values aus
         i = 0
         while i <= self.stateCounter:
-            print "[" + v(s[i], + "] ")
+            print "[" + str(self.v(s[i])) + "] "
             i += 1
         print "\n"
         self.agent.printOutWeightTable()
@@ -244,30 +253,36 @@ class TemporalDifferenceTrainer(object):
         counter = 0
         while not self.game.isFinished():
             #  Player X begins
+            nextMoveX = self.player.getMove(self.game.getState(),'X') 
             self.game.moveX(nextMoveX)
             #  put it out to console
-            print "X move: " + nextMoveX
+            print "X move: " + str(nextMoveX)
             print self.game.stateToString()
             #  save state
-            self.lastStates[counter] = self.game.getState().clone()
-            self.lastRewards[counter] = self.game.getReward()
+            self.lastStates[counter] = deepcopy(self.game.getState())
+            self.lastRewards[counter] = deepcopy(self.game.getReward())
             #  check state, maybe break game if finished
             if self.game.isFinished():
                 break
             counter += 1
+            
             #  ****************************************************************************
             #  Player O follows
+            nextMoveO = self.player.getMove(self.game.getState(),'O') 
             self.game.moveO(nextMoveO)
             #  put it out to console
-            print "O move: " + nextMoveO
+            print "O move: " + str(nextMoveO)
             print self.game.stateToString()
+            
             #  save state
-            self.lastStates[counter] = self.game.getState().clone()
-            self.lastRewards[counter] = self.game.getReward()
+            self.lastStates[counter] = deepcopy(self.game.getState())
+            self.lastRewards[counter] = deepcopy(self.game.getReward())
+            
             #  check state, maybe break game if finished
             if self.game.isFinished():
                 break
             counter += 1
+            
         #  count how many states in this game recently has existed
         self.stateCounter = counter
 
@@ -326,10 +341,10 @@ class TemporalDifferenceTrainer(object):
             #  1. Play a game
             #  remember all rewards and states
             if isAgentVsAgent:
-                playAgentVsAgent(agentPlayFirst)
+                self.playAgentVsAgent(agentPlayFirst)
             else:
-                playAgentVsRandom(agentPlayFirst)
-            calculateStatistic(i)
+                self.playAgentVsRandom(agentPlayFirst)
+            self.calculateStatistic(i)
             if isLearning:
                 #  2. Do TD-Learning!
                 #  3. Calculate neural net!
@@ -338,9 +353,9 @@ class TemporalDifferenceTrainer(object):
             self.game.renewState()
             #  shrink epsilon in depence of number of games
             if isLearning:
-                self.agent.setEpsilon(calculateNextEpsilon(i, epsilonAtStart))
-                self.agent.setAlpha(calculateNextAlpha(i, alphaAtStart))
-                self.agent.setBeta(calculateNextBeta(i, betaAtStart))
+                self.agent.setEpsilon(self.calculateNextEpsilon(i, epsilonAtStart))
+                self.agent.setAlpha(self.calculateNextAlpha(i, alphaAtStart))
+                self.agent.setBeta(self.calculateNextBeta(i, betaAtStart))
                 self.alphaTable[i] = self.agent.getAlpha()
                 self.betaTable[i] = self.agent.getBeta()
                 self.epsilonTable[i] = self.agent.getEpsilon()
@@ -348,47 +363,55 @@ class TemporalDifferenceTrainer(object):
                 print self.agent.getAlpha()
                 print self.agent.getBeta()
             i += 1
+            
         #  save after training
         if isLearning:
             #  save Agent to File
             self.agent.saveNetToFile(name + ".net")
-        output = StringBuilder()
-        output.append("name: " + name + self.lineSeparator)
-        output.append("numberOfGames: " + numberOfGames + self.lineSeparator)
-        output.append("agentPlayFirst: " + agentPlayFirst + self.lineSeparator)
-        output.append("alpha: " + alphaAtStart + self.lineSeparator)
-        output.append("beta: " + betaAtStart + self.lineSeparator)
-        output.append("epsilon: " + epsilonAtStart + self.lineSeparator)
-        output.append("gamma: " + gamma + self.lineSeparator)
-        output.append("lambda: " + lambda_ + self.lineSeparator)
-        output.append("winfactors: " + self.lineSeparator)
+            
+        #output = ""
+        output = "name: " + name + self.lineSeparator
+        output += "numberOfGames: " + numberOfGames + self.lineSeparator
+        output += "agentPlayFirst: " + agentPlayFirst + self.lineSeparator
+        output += "alpha: " + alphaAtStart + self.lineSeparator
+        output += "beta: " + betaAtStart + self.lineSeparator
+        output += "epsilon: " + epsilonAtStart + self.lineSeparator
+        output += "gamma: " + gamma + self.lineSeparator
+        output += "lambda: " + lambda_ + self.lineSeparator
+        output += "winfactors: " + self.lineSeparator
+        
         i = 0
-        while len(winFactorTable):
-            output.append(self.winFactorTable[i] + self.lineSeparator)
+        
+        while len(self.winFactorTable):
+            output += self.winFactorTable[i] + self.lineSeparator
             i += 1
-        output.append(self.lineSeparator)
-        output.append("remisFactor:")
-        output.append(self.remisFactorTable[len(remisFactorTable)] + self.lineSeparator)
+        output += self.lineSeparator
+        output += "remisFactor:"
+        output += self.remisFactorTable[len(self.remisFactorTable)] + self.lineSeparator
         print output.__str__()
         #  save winning rate to textfile
-        writeStringToFile(name + "_TestWith" + numberOfGames + agentPlayFirst + ".txt", output.__str__().replace(".", ","))
+        self.writeStringToFile(name + "_TestWith" + numberOfGames + agentPlayFirst + ".txt", output.__str__().replace(".", ","))
         #  save parameter tables to textfiles
         if isLearning:
-            output = StringBuilder()
-            while len(alphaTable):
-                output.append(self.alphaTable[i] + self.lineSeparator)
+            
+            output = ""
+            while len(self.alphaTable):
+                output += self.alphaTable[i] + self.lineSeparator
                 i += 1
-            writeStringToFile(name + "_AlphaTable" + numberOfGames + ".txt", output.__str__().replace(".", ","))
-            output = StringBuilder()
-            while len(betaTable):
-                output.append(self.betaTable[i] + self.lineSeparator)
+            self.writeStringToFile(name + "_AlphaTable" + numberOfGames + ".txt", output.__str__().replace(".", ","))
+            
+            output = ""
+            while len(self.betaTable):
+                output += self.betaTable[i] + self.lineSeparator
                 i += 1
-            writeStringToFile(name + "_BetaTable" + numberOfGames + ".txt", output.__str__().replace(".", ","))
-            output = StringBuilder()
-            while len(epsilonTable):
-                output.append(self.epsilonTable[i] + self.lineSeparator)
+            self.writeStringToFile(name + "_BetaTable" + numberOfGames + ".txt", output.__str__().replace(".", ","))
+            
+            output = ""
+            while len(self.epsilonTable):
+                output += self.epsilonTable[i] + self.lineSeparator
                 i += 1
-            writeStringToFile(name + "_EpsilonTable" + numberOfGames + ".txt", output.__str__().replace(".", ","))
+                
+            self.writeStringToFile(name + "_EpsilonTable" + numberOfGames + ".txt", output.__str__().replace(".", ","))
 
     # 
     # 	 * epsilonStart fall down through this function from start value againt zero
@@ -400,7 +423,7 @@ class TemporalDifferenceTrainer(object):
     # 	 
     def calculateNextEpsilon(self, n, epsilonStart):
         """ generated source for method calculateNextEpsilon """
-        return float((Math.pow(0.96, (n / 100) + 1) * epsilonStart))
+        return float((math.pow(0.96, (n / 100) + 1) * epsilonStart))
 
     # 
     # 	 * betaAtStart fall down through this function from start value againt zero
@@ -412,7 +435,7 @@ class TemporalDifferenceTrainer(object):
     # 	 
     def calculateNextBeta(self, n, betaAtStart):
         """ generated source for method calculateNextBeta """
-        return float((Math.pow(0.98, (n / 100) + 1) * betaAtStart))
+        return float((math.pow(0.98, (n / 100) + 1) * betaAtStart))
 
     # 
     # 	 * alphaAtStart fall down through this function from start value againt zero
@@ -424,7 +447,7 @@ class TemporalDifferenceTrainer(object):
     # 	 
     def calculateNextAlpha(self, n, alphaAtStart):
         """ generated source for method calculateNextAlpha """
-        return float((Math.pow(0.98, (n / 100) + 1) * alphaAtStart))
+        return float((math.pow(0.98, (n / 100) + 1) * alphaAtStart))
 
     # 
     # 	 * calculates the statistic rates
@@ -516,9 +539,16 @@ class TemporalDifferenceTrainer(object):
 
     def writeStringToFile(self, filePath, content):
         """ generated source for method writeStringToFile """
-        try:
-            writer.write(content)
-            writer.close()
-        except IOException as e:
-            print e.getMessage()
-
+        
+        
+        f = open(filePath, 'w')
+        print "attention writing dends on os"
+        write(content)
+        
+        
+        
+        #try:
+        #    writer.write(content)
+        #    writer.close()
+        #except IOException as e:
+        #    print e.getMessage()
