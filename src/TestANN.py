@@ -46,6 +46,8 @@ class TestANN(object):
         print "[" + str(toLearn) + "] "
         print "KNN: "
         print "[" + str(TestANN.v( last_input)) + "] "
+        
+        cls.agent.printOutWeightTable()
 
     # 
     # 	 * aksing agent for a value

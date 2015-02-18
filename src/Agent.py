@@ -342,19 +342,24 @@ class Agent(object):
 
     def printOutWeightTable(self):
         """ generated source for method printOutWeightTable """
-        builder = ""
-        builder.append("weights_input_hidden" + "\n")
+        b = ""
+        b = b + "weights_input_hidden" + "\n"
         #i = 0
         #while len(self.weightsInputHidden):
         #    j=0
         #    while len(self.weightsInputHidden[i]):
-        #        builder.append("[" + self.weightsInputHidden[i][j] + "]")
+        #        b = b + "[" + str(self.weightsInputHidden[i][j]) + "]"
         #        j += 1
-        #    builder.append("\n")
+        #    b = b + "\n"
         #    i += 1
-        builder.append("\n")
-        builder.append(str(self.weightsInputHidden))
-        builder.append("weights_hidden_output" + "\n")
+            
+        for i in range(len(self.weightsInputHidden)):
+            for j in range(len(self.weightsInputHidden[i])):
+                b = b + "[" + str(self.weightsInputHidden[i][j]) + "]"
+            b = b + "\n"
+            
+        b = b + "\n"
+        b = b + "weights_hidden_output" + "\n"
         
         #i = 0
         #while len(self.weightsHiddenOutput):
@@ -364,8 +369,14 @@ class Agent(object):
         #        j += 1
         #    builder.append("\n")
         #    i += 1
-        builder.append(str(self.weightsHiddenOutput))
-        print builder.__str__()
+        
+        
+        for i in range(len(self.weightsHiddenOutput)):
+            for j in range(len(self.weightsHiddenOutput[i])):
+                b = b + "[" + str(self.weightsHiddenOutput[i][j]) + "]"
+            b = b + "\n"
+
+        print b
 
     def saveNetToFile(self, filePath):
         """ generated source for method saveNetToFile """

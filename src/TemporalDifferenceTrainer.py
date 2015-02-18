@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 """ generated source for module TemporalDifferenceTrainer """
 # package: de.fhb.infm.knn.neuro
-import java.io.BufferedWriter
+#import java.io.BufferedWriter
 
-import java.io.File
+#import java.io.File
 
-import java.io.FileWriter
+#import java.io.FileWriter
 
-import java.io.IOException
+#import java.io.IOException
 
-import de.fhb.infm.knn.trainer.worldmodel.Environment
+#import de.fhb.infm.knn.trainer.worldmodel.Environment
 
-import de.fhb.infm.knn.trainer.worldmodel.RandomPlayer
+#import de.fhb.infm.knn.trainer.worldmodel.RandomPlayer
 
 # 
 #  * TD Trainer for a reinforcement agent

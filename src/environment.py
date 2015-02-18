@@ -205,20 +205,20 @@ class Environment(object):
         b = ""
         i = 0
         while i <= 2:
-            b.append(self.state[i] + " ")
+            b = b + self.state[i] + " "
             i += 1
-        b.append("\n")
+        b = b + "\n"
         i = 3
         while i <= 5:
-            b.append(self.state[i] + " ")
+            b = b + self.state[i] + " "
             i += 1
-        b.append("\n")
+        b = b + "\n"
         i = 6
         while i <= 8:
-            b.append(self.state[i] + " ")
+            b = b + self.state[i] + " "
             i += 1
-        b.append("\n")
-        return b.__str__()
+        b = b + "\n"
+        return b
 
     # 
     # 	 * Get rewards in agents View setAgentSign before! imporntant!
