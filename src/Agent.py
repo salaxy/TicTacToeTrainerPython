@@ -328,9 +328,10 @@ class Agent(object):
     def weightedSum(self, weights, activations):
         """ generated source for method weightedSum """
         s = 0.0
-        i = 0
+        #i = 0
         #while len(weights):
         for i in range(len(weights)):
+            print str(i)
             s = s + weights[i] * activations[i]
             #i += 1
         return s
@@ -447,7 +448,9 @@ class Agent(object):
                 possibilityCounter += 1
             #i += 1
         if randomDecision:
-            return fieldNumbers[self.random.nextInt(possibilityCounter)]
+            random = self.random.randrange(0,possibilityCounter+1,1)
+            print str(random)
+            return fieldNumbers[random]
         
         best = 0
         for i in range(len(possibleMoves)):

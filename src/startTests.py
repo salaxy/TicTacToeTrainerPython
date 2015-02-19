@@ -30,89 +30,19 @@ class StartTests(object):
     @classmethod
     def main(cls, args):
         """ generated source for method main """
-        #  trainOfflineAndTest(500, 0.1f, 0.1f, 0.9f);
-        #  trainOfflineAndTest(500, 0.1f, 0.1f, 1.0f);
-        #  trainOfflineAndTest(5000, 0.1f, 0.1f, 1.0f);
-        #  trainOfflineAndTest(10000, 0.1f, 0.1f, 1.0f);
-        #  trainOfflineAndTest(10000, 0.1f, 0.1f, 0.9f);
-        #  trainOfflineAndTest(10000, 0.5f, 0.5f, 0.9f);
-        #  trainOfflineAndTest(10000, 0.2f, 0.2f, 0.9f);
-        #  trainOfflineAndTest(10000, 0.05f, 0.05f, 0.9f);
-        #  trainOfflineAndTest(10000, 1.0f, 1.0f, 1.0f);
-        #  trainOfflineAndTest(10000, 0.5f, 0.5f, 1.0f);
-        #  trainOfflineAndTest(10000, 0.2f, 0.2f, 1.0f);
-        #  trainOfflineAndTest(10000, 0.2f, 0.5f, 1.0f);
-        #  trainOfflineAndTest(10000, 0.1f, 0.1f, 1.0f);
-        #  trainOfflineAndTest(10000, 0.05f, 0.05f, 1.0f);
-        #  trainOfflineAndTest(10000, 0.1f, 0.1f, 1.0f);
-        #  trainOfflineAndTest(10000, 0.1f, 0.1f, 0.9f);
-        #  trainOfflineAndTest(10000, 0.1f, 0.1f, 0.5f);
-        #  trainOfflineAndTest(10000, 0.1f, 0.1f, 0.2f);
-        #  trainOfflineAndTest(10000, 0.1f, 0.1f, 0.1f);
-        #  trainOfflineAndTest(500, 0.1f, 0.1f, 0.2f);
-        #  trainOfflineAndTest(1000, 0.1f, 0.1f, 0.2f);
-        #  trainOfflineAndTest(2000, 0.1f, 0.1f, 0.2f);
-        #  trainOfflineAndTest(5000, 0.1f, 0.1f, 0.2f);
-        #  trainOfflineAndTest(7000, 0.1f, 0.1f, 0.2f);
-        #  trainOfflineAndTest(10000, 0.1f, 0.1f, 0.2f);
-        #  trainOfflineAndTest(100000, 0.1f, 0.1f, 0.2f);
-        #  trainer.teachActiveAndSaveStatistics(name, numberOfGames,
-        #  alphaAtStart, betaAtStart, gamma, lambda,
-        #  epsilonAtStart, agentPlayFirst, isOnlineLearning)
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.8f, 1.0f,
-        #  1.0f, 0.0f, 0.3f, true, true);
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.8f, 1.0f,
-        #  1.0f, 0.0f, 0.5f, true, true);
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.8f, 1.0f,
-        #  1.0f, 0.0f, 0.8f, true, true);
-        # 
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 1.0f, 1.0f,
-        #  1.0f, 0.0f, 0.8f, true, true);
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 1.0f, 1.0f,
-        #  1.0f, 0.0f, 1.0f, true, true);
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.8f, 1.0f,
-        #  1.0f, 0.0f, 0.2f, true, true);
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 1.0f, 1.0f,
-        #  1.0f, 0.0f, 0.2f, true, true);
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 1.0f, 1.0f,
-        #  1.0f, 0.0f, 0.1f, true, true);
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 1.0f, 1.0f,
-        #  1.0f, 0.0f, 0.05f, true, true);
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 1.0f, 1.0f,
-        #  1.0f, 0.0f, 0.1f, true, true);
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.5f, 0.5f,
-        #  1.0f, 0.0f, 0.1f, true, true);
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.2f, 0.2f,
-        #  1.0f, 0.0f, 0.1f, true, true);
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.1f, 0.1f,
-        #  1.0f, 0.0f, 0.1f, true, true);
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.1f, 0.2f,
-        #  1.0f, 0.0f, 0.1f, true, true);
-        #  trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.2f, 0.1f,
-        #  1.0f, 0.0f, 0.1f, true, true);
-        # 		trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.1f, 0.1f, 1.0f, 0.0f, 0.1f,
-        # 				true, true);
-        # 		trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.1f, 0.1f, 0.8f, 0.0f, 0.1f,
-        # 				true, true);
-        # 		trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.1f, 0.1f, 0.6f, 0.0f, 0.1f,
-        # 				true, true);
-        # 		trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.1f, 0.1f, 0.4f, 0.0f, 0.1f,
-        # 				true, true);
-        # 		trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.1f, 0.1f, 0.2f, 0.0f, 0.1f,
-        # 				true, true);
-        # 		trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.1f, 0.1f, 0.1f, 0.0f, 0.1f,
-        # 				true, true);
-        # 		trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.1f, 0.1f, 0.05f, 0.0f, 0.1f,
-        # 				true, true);
-        # 		
-        # 		trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.1f, 0.1f, 1.0f, 0.0f, 0.1f,
-        # 				true, true, true);
+        #cls.trainOfflineAndTest(100, 0.1, 0.1, 0.9);
+        #cls.trainOfflineAndTest(500, 0.1, 0.1, 1.0);
+
+        cls.trainer.teachActiveAndSaveStatistics("onlineTest", 100, 0.8, 1.0 ,1.0, 0.0, 0.3, True, True,True);
+        cls.trainer.teachActiveAndSaveStatistics("path", 10000, 0.0, 0.0, 0.0, 0.0, 0.0, True, False, False)
+
+        #trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.1f, 0.1f, 1.0f, 0.0f, 0.1f,true, true, true);
         # 		trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.1f, 0.1f, 1.0f, 0.0f, 0.1f,
         # 				false, true, true);
         # 		
         # 		testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_first.net", 10000, true);
         # 		testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_secound.net", 10000, true);
-        cls.testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_first.net", 10000, False)
+        #cls.testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_first.net", 10000, False)
         cls.testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_secound.net", 10000, False)
         # 		testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1.net", 10000, false);
 
@@ -145,7 +75,7 @@ class StartTests(object):
     @classmethod
     def trainOfflineRandomAndSave(cls, numberOfGames, alpha, beta, gamma):
         """ generated source for method trainOfflineRandomAndSave """
-        fileName = "net" + numberOfGames + "_a" + alpha + "_b" + beta + "g_" + gamma + ".save"
+        fileName = "net" + str(numberOfGames) + "_a" + str(alpha) + "_b" + str(beta) + "g_" + str(gamma) + ".save"
         agent = Agent(alpha, beta, 0.0)
         cls.trainer = TemporalDifferenceTrainer(cls.game, agent, cls.player, gamma)
         cls.trainer.teachPassiveRandom(numberOfGames)

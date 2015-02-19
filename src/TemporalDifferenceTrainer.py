@@ -191,11 +191,11 @@ class TemporalDifferenceTrainer(object):
             v_st = self.v(s[t])+ self.alpha(n) * (r[t + 1] + self.gamma * self.v(s[t+1]) - self.v(s[t]))
             self.valueTable[t] = self.valueTable[t] + self.alpha(n) * (r[t + 1] + self.gamma * self.valueTable[t + 1] - self.valueTable[t])
             self.learnV(self.lastStates[t], v_st)
-            print str(v_st)
-            print str(r[t + 1]) 
-            print str(self.valueTable[t])
-            print str(self.alpha(n))
-            print str(t)
+            #print str(v_st)
+            #print str(r[t + 1]) 
+            #print str(self.valueTable[t])
+            #print str(self.alpha(n))
+            #print str(t)
             t -= 1
             
         #  learn end reward
@@ -356,7 +356,7 @@ class TemporalDifferenceTrainer(object):
         self.game.setAgentPlayerX()
         #  Agent(ANN) Parameters
         if isLearning:
-            name = "net" + numberOfGames + "_a" + alphaAtStart + "_b" + betaAtStart + "g_" + gamma + "e_" + epsilonAtStart
+            name = "net" + str(numberOfGames) + "_a" + str(alphaAtStart) + "_b" + str(betaAtStart) + "g_" + str(gamma) + "e_" + str(epsilonAtStart)
             self.agent.setAlpha(alphaAtStart)
             self.agent.setBeta(betaAtStart)
             self.agent.setEpsilon(epsilonAtStart)
@@ -539,9 +539,9 @@ class TemporalDifferenceTrainer(object):
             else:
                 nextMoveA = self.agent.getNextDecision(self.game.getState(), '-', 'O')
                 self.game.moveO(nextMoveA)
-            print "X move: " + nextMoveA
+            print "X move: " + str(nextMoveA)
             print self.game.stateToString()
-            self.getLastStates()[counter] = self.game.getState().clone()
+            self.getLastStates()[counter] = deepcopy(self.game.getState())
             self.getLastRewards()[counter] = self.game.getReward()
             if self.game.isFinished():
                 break
@@ -552,7 +552,7 @@ class TemporalDifferenceTrainer(object):
             else:
                 nextMoveB = self.agent.getNextDecision(self.game.getState(), '-', 'X')
                 self.game.moveX(nextMoveB)
-            print "O move: " + nextMoveB
+            print "O move: " + str(nextMoveB)
             print self.game.stateToString()
             self.getLastStates()[counter] = self.game.getState().clone()
             self.getLastRewards()[counter] = self.game.getReward()
