@@ -43,7 +43,7 @@ class StartTests(object):
         # 		testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_first.net", 10000, true);
         # 		testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_secound.net", 10000, true);
         #cls.testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_first.net", 10000, False)
-        cls.testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_secound.net", 10, False)
+        #cls.testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_secound.net", 10, False)
         # 		testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1.net", 10000, false);
 
     # 
