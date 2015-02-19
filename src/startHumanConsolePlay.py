@@ -1,24 +1,20 @@
 #!/usr/bin/env python
-""" generated source for module StartHumanConsolePlay """
-# package: de.fhb.infm.knn.trainer
-import de.fhb.infm.knn.neuro.Agent
+from numpy import char
 
-import de.fhb.infm.knn.neuro.TemporalDifferenceTrainer
+from TemporalDifferenceTrainer import TemporalDifferenceTrainer
+from agent import Agent
+from environment import Environment
+from player import RandomPlayer
+from copy import deepcopy
 
-import de.fhb.infm.knn.system.In
-
-import de.fhb.infm.knn.trainer.worldmodel.RandomPlayer
-
-import de.fhb.infm.knn.trainer.worldmodel.Environment
-
+#
+#  Its a felxible human vs random or learnign agent mode playing
+#  in console of your system
 # 
-#  * Its a felxible human vs random or learnign agent mode playing in console of
-#  * your system
-#  * 
-#  * @author Andy Klay 2014
-#  
+#  @author Andy Klay 2014
+#
 class StartHumanConsolePlay(object):
-    """ generated source for class StartHumanConsolePlay """
+    
     game = Environment()
     agent = Agent()
     randomPlayer = RandomPlayer()
@@ -30,13 +26,12 @@ class StartHumanConsolePlay(object):
     # 	 
     @classmethod
     def main(cls, args):
-        """ generated source for method main """
         #  load ANN state optional
-        train()
-        cls.agent.loadNetFromFile(cls.TRAINED_NET_FILE_NAME)
+        #cls.train()
+        #cls.agent.loadNetFromFile(cls.TRAINED_NET_FILE_NAME)
         cls.agent.setEpsilon(0.05)
         #  lets start
-        startHumanVsAgent(True)
+        cls.startHumanVsAgent(True)
 
     # 
     # 	 * start a game with human gameplay against random or agent player
@@ -44,7 +39,7 @@ class StartHumanConsolePlay(object):
     # 	 
     @classmethod
     def startHumanVsAgent(cls, isLearning):
-        """ generated source for method startHumanVsAgent """
+        
         print "Neues Spiel gestartet!"
         humanBegins = False
         isAgainstRandom = False
@@ -55,9 +50,11 @@ class StartHumanConsolePlay(object):
         humanSign = 'O'
         playerA = "AGENT"
         playerB = "DU"
+        
         #  Ask which enemy should used
         while whichEnemyValid:
-            print "Moechten Sie gegen Random (R) oder einen Agenten (A) spielnen?"
+            decision =  raw_input("Moechten Sie gegen Random (R) oder einen Agenten (A) spielen? \n")
+            print decision
             if decision == 'R':
                 isAgainstRandom = True
                 print "Sie spielen gegen Random!"
@@ -65,9 +62,11 @@ class StartHumanConsolePlay(object):
             else:
                 print "Sie spielen gegen den Agenten!"
             whichEnemyValid = False
+            
         #  Ask who should begin the game
         while whoBeginInputValid:
-            print "Moechten Sie beginnen? Ja (J) oder NEIN (N)"
+            decision =  raw_input("Moechten Sie beginnen? Ja (J) oder NEIN (N) \n")
+            
             if decision == 'J':
                 humanBegins = True
                 print "Sie beginnen!"
@@ -83,10 +82,12 @@ class StartHumanConsolePlay(object):
             cls.game.setAgentPlayerX()
         else:
             cls.game.setAgentPlayerO()
+            
         #  choose the player sign
         while whichSignInputValid:
-            print "Mit welchem Zeichen moechten Sie spielen?"
-            print "O oder X?"
+            print "Mit welchem Zeichen moechten Sie spielen? \n"
+            decision =  raw_input("O oder X?\n")
+            
             if decision == 'X':
                 agentSign = 'O'
                 humanSign = 'X'
@@ -98,39 +99,48 @@ class StartHumanConsolePlay(object):
                 agentSign = 'X'
                 humanSign = 'O'
             whichSignInputValid = False
+            
         #  begin the game
         print "Das Spiel beginnt!"
         playAgain = True
+
         while playAgain:
+            counter = 0            
             print cls.game.stateToString()
+            
             while not cls.game.isFinished():
                 if humanBegins:
-                    playHumanTurn(humanSign)
+                    cls.playHumanTurn(humanSign)
                 else:
                     if isAgainstRandom:
-                        playRandomTurn(agentSign)
+                        cls.playRandomTurn(agentSign)
                     else:
-                        playAgentTurn(agentSign)
+                        cls.playAgentTurn(agentSign)
+                        
                 #  push state and reward to trainer
-                cls.trainer.getLastStates()[counter] = cls.game.getState().clone()
+                cls.trainer.getLastStates()[counter] = deepcopy(cls.game.getState())
                 cls.trainer.getLastRewards()[counter] = cls.game.getReward()
+                
                 #  check state, maybe break game if finished
-                if checkGameState(cls.game, playerA):
+                if cls.checkGameState(cls.game, playerA):
                     break
                 counter += 1
+                
                 #  ****************************************************************************
                 if humanBegins:
                     if isAgainstRandom:
-                        playRandomTurn(agentSign)
+                        cls.playRandomTurn(agentSign)
                     else:
-                        playAgentTurn(agentSign)
+                        cls.playAgentTurn(agentSign)
                 else:
-                    playHumanTurn(humanSign)
+                    cls.playHumanTurn(humanSign)
+                    
                 #  push state and reward to trainer
-                cls.trainer.getLastStates()[counter] = cls.game.getState().clone()
+                cls.trainer.getLastStates()[counter] = deepcopy(cls.game.getState())
                 cls.trainer.getLastRewards()[counter] = cls.game.getReward()
+                
                 #  check state, maybe break game if finished
-                if checkGameState(cls.game, playerB):
+                if cls.checkGameState(cls.game, playerB):
                     break
                 counter += 1
             #  count how many states in this game recently has existed
@@ -141,13 +151,14 @@ class StartHumanConsolePlay(object):
             #  set back gamestate
             cls.game.renewState()
             print "Moechten Sie ein weiteres Spiel spielen?"
-            print "Ja (J) oder NEIN (N)"
+            
+            decision =  raw_input("Ja (J) oder NEIN (N) \n")
+            
             if decision == 'N':
                 playAgain = False
 
     @classmethod
     def playAgentTurn(cls, playerSign):
-        """ generated source for method playAgentTurn """
         print "AGENT spielt!"
         #  Player X begins - TRAINED AGENT
         nextMove = cls.agent.getNextDecision(cls.game.getState(), '-', playerSign)
@@ -155,30 +166,31 @@ class StartHumanConsolePlay(object):
             cls.game.moveO(nextMove)
         else:
             cls.game.moveX(nextMove)
-        print "AGENT entscheidet fuer " + nextMove + "."
+        print "AGENT entscheidet fuer " + str(nextMove) + "."
         print cls.game.stateToString()
 
     @classmethod
     def playRandomTurn(cls, playerSign):
-        """ generated source for method playRandomTurn """
         print "RANDOM spielt!"
         nextMove = cls.randomPlayer.getMove(cls.game.getState(), playerSign)
         if playerSign == 'O':
             cls.game.moveO(nextMove)
         else:
             cls.game.moveX(nextMove)
-        print "RANDOM entscheidet fuer " + nextMove + "."
+        print "RANDOM entscheidet fuer " + str(nextMove) + "."
         print cls.game.stateToString()
 
     @classmethod
     def playHumanTurn(cls, playerSign):
-        """ generated source for method playHumanTurn """
         #  Player O follows - HUMAN
         print "Sie sind dran!"
-        print "Waehle zwischen 1 und 9."
         nextMove = 0
+        
         decisionValid = False
         while not decisionValid:
+            
+            humanDecision =  int(raw_input("Waehle zwischen 1 und 9: \n"))-1
+            
             if cls.game.isPossibleMove(humanDecision, playerSign):
                 decisionValid = True
                 nextMove = humanDecision
@@ -189,7 +201,7 @@ class StartHumanConsolePlay(object):
             cls.game.moveO(nextMove)
         else:
             cls.game.moveX(nextMove)
-        print "Sie entschieden fuer " + nextMove + "."
+        print "Sie entschieden fuer " + str(nextMove) + "."
         print cls.game.stateToString()
 
     @classmethod

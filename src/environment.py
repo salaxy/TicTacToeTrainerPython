@@ -254,20 +254,18 @@ class Environment(object):
     def getPossibleMoves(self, currentState, playerSign):
         """ generated source for method getPossibleMoves """
         numberOfPossibleMoves = 0
-        i = 0
-        while len(currentState):
+        
+        for i in range(len(currentState)):
             if currentState[i] == self.UNOCCUPIED_FIELD_SIGN:
                 numberOfPossibleMoves += 1
-            i += 1
         fieldNumbers = [None]*numberOfPossibleMoves
         possibilityCounter = 0
         #  get all numbers for all possible moves
-        i = 0
-        while len(currentState):
+        for i in range(len(currentState)):
             if currentState[i] == self.UNOCCUPIED_FIELD_SIGN:
                 fieldNumbers[possibilityCounter] = i
                 possibilityCounter += 1
-            i += 1
+                
         return fieldNumbers
 
     # 
@@ -291,12 +289,11 @@ class Environment(object):
             return False
         possibilites = self.getPossibleMoves(self.state, playerSign)
         isPossible = False
-        i = 0
-        while len(possibilites):
+
+        for i in range(len(possibilites)):
             if decision == possibilites[i]:
                 isPossible = True
                 break
-            i += 1
         return isPossible
 
     # 
@@ -306,10 +303,8 @@ class Environment(object):
     def countSignInState(self, sign):
         """ generated source for method countSignInState """
         value = 0
-        i = 0
-        while len(self.state):
+        for i in range(len(self.state)):
             if self.state[i] == sign:
                 value += 1
-            i += 1
         return value
 

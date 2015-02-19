@@ -88,6 +88,8 @@ class TemporalDifferenceTrainer(object):
         self.gamma = gamma
         #  this.lambda = lambda;
         
+        self.initAll()
+        
         if(os.name =="nt"):
             print " windows detected"
             self.lineSeparator = "\n"
@@ -492,7 +494,6 @@ class TemporalDifferenceTrainer(object):
     # 	 * @param agentIsFirst - which position the agent is
     # 	 
     def playAgentVsRandom(self, agentIsFirst):
-        """ generated source for method playAgentVsRandom """
         counter = 0
         while not self.game.isFinished():
             #  Player X begins
