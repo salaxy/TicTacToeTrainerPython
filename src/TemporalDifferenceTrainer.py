@@ -554,7 +554,7 @@ class TemporalDifferenceTrainer(object):
                 self.game.moveX(nextMoveB)
             print "O move: " + str(nextMoveB)
             print self.game.stateToString()
-            self.getLastStates()[counter] = self.game.getState().clone()
+            self.getLastStates()[counter] = deepcopy(self.game.getState())
             self.getLastRewards()[counter] = self.game.getReward()
             if self.game.isFinished():
                 break

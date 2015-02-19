@@ -120,7 +120,7 @@ class Agent(object):
     # 	 
     def getEpsilon(self):
         """ generated source for method getEpsilon """
-        return self.selector.getEpsilon()
+        return self.epsilon
 
     # 
     # 	 * input vector need a length of N_INPUT - 1
@@ -218,7 +218,7 @@ class Agent(object):
         for i in range(self.N_HIDDEN):
             for j in range(self.N_INPUT):
                     bufferHidden[j] = self.weightsInputHidden[j][i]
-            if i == self.N_HIDDEN - 1:
+            if i == (self.N_HIDDEN - 1):
                 activationHidden[i] = self.biasHiddenLayer
             else:
                 activationHidden[i] = self.activationFunction(bufferHidden, self.lastInput) 
@@ -330,6 +330,10 @@ class Agent(object):
         s = 0.0
         #i = 0
         #while len(weights):
+        
+        print str(len(weights))
+        print str(len(activations))
+        
         for i in range(len(weights)):
             print str(i)
             s = s + weights[i] * activations[i]
@@ -411,7 +415,6 @@ class Agent(object):
     #      * @return int field number to choose, error value = -1
     #      
     def getNextDecision(self, currentState, unoccupiedFieldSign, playerSign):
-        """ generated source for method getNextDecision """
         #  build in expolration in depency of a factor
         randomChance = self.random.randrange(0,100,1)
         randomDecision = False
@@ -421,12 +424,11 @@ class Agent(object):
             
         #  1st count possible moves
         numberOfPossibleMoves = 0
-        #i = 0
-        #while len(currentState):
+
         for i in range(len(currentState)):
             if currentState[i] == unoccupiedFieldSign:
                 numberOfPossibleMoves += 1
-        #    i += 1
+                
         possibleMoves = [None]*numberOfPossibleMoves
         fieldValue = [None]*numberOfPossibleMoves
         fieldNumbers = [None]*numberOfPossibleMoves
@@ -434,21 +436,22 @@ class Agent(object):
         
         #  2nd which moves are possible
         #  3rd get all values for all possible moves
-        #i = 0
-        #while len(currentState):
         for i in range(len(currentState)):
             if currentState[i] == unoccupiedFieldSign:
                 fieldNumbers[possibilityCounter] = i
+                
                 if not randomDecision:
-                    #  copy and set possible move in a state
+                    """ copy and set possible move in a state """
                     possibleMoves[possibilityCounter] = deepcopy(currentState)
                     possibleMoves[possibilityCounter][i] = playerSign
 
+                    """calculate value of this state"""
+                    self.setInput(Agent.stateToValues(currentState));
                     fieldValue[possibilityCounter] = self.responseValue()
+                    
                 possibilityCounter += 1
-            #i += 1
         if randomDecision:
-            random = self.random.randrange(0,possibilityCounter+1,1)
+            random = self.random.randrange(0,possibilityCounter,1)
             print str(random)
             return fieldNumbers[random]
         

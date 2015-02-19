@@ -33,8 +33,8 @@ class StartTests(object):
         #cls.trainOfflineAndTest(100, 0.1, 0.1, 0.9);
         #cls.trainOfflineAndTest(500, 0.1, 0.1, 1.0);
 
-        cls.trainer.teachActiveAndSaveStatistics("onlineTest", 100, 0.8, 1.0 ,1.0, 0.0, 0.3, True, True,True);
-        cls.trainer.teachActiveAndSaveStatistics("path", 10000, 0.0, 0.0, 0.0, 0.0, 0.0, True, False, False)
+        cls.trainer.teachActiveAndSaveStatistics("onlineTest", 10, 0.8, 1.0 ,1.0, 0.0, 0.3, True, True,True);
+        cls.trainer.teachActiveAndSaveStatistics("path", 10, 0.0, 0.0, 0.0, 0.0, 0.0, True, False, False)
 
         #trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.1f, 0.1f, 1.0f, 0.0f, 0.1f,true, true, true);
         # 		trainer.teachActiveAndSaveStatistics("onlineTest", 10000, 0.1f, 0.1f, 1.0f, 0.0f, 0.1f,
@@ -43,7 +43,7 @@ class StartTests(object):
         # 		testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_first.net", 10000, true);
         # 		testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_secound.net", 10000, true);
         #cls.testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_first.net", 10000, False)
-        cls.testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_secound.net", 10000, False)
+        cls.testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1_secound.net", 10, False)
         # 		testAgentFromFileWithOutLearning("net10000_a0.1_b0.1g_1.0e_0.1.net", 10000, false);
 
     # 
