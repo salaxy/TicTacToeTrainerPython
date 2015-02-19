@@ -6,70 +6,59 @@ from random import Random
 
 
 # 
-#  * This is a agent for reinforcement learning with a artificial neural net.
-#  * 
-#  * @author Andy Klay 2014
+# This is a agent for reinforcement learning with a artificial neural net.
+#
+# @author Andy Klay 2014
 #  
 class Agent(object):
-    """ generated source for class Agent """
+
     #  5 + bias
     N_HIDDEN = 6
     N_OUTPUT = 1
-
     #  9 inputs + bias
     N_INPUT = 10
+    
     biasInputLayer = 1
     biasHiddenLayer = 1
+    
     weightsInputHidden = []
     weightsHiddenOutput = []
     lastActivationHidden = []
     lastActivationOutput = []
     lastInput = []
     targetSignal = float()
-    #alpha = 0.1
-    #beta = 0.2
-    #RLselector 
+    
+    alpha = 0.1
+    beta = 0.2
     random = Random()
+    
     explorationInPercent=0
     epsilon = float()
 
-    # 
-    # 	 * intializer
-    # 	 
-    #@overloaded
-    #@__init__.register(object)
-    #def __init__(self):
-    #    """ generated source for method __init__ """
-    #    self.initializeNetWeights()
-    #    self.RLselector = Selector(self, 0.0)
-
-
-    # 
-    # 	 * intializer with parameter setting
-    # 	 * 
-    # 	 * @param alpha
-    # 	 * @param beta
-    # 	 * @param epsilon
-    # 	 
+    #/**
+    # * intializer with parameter setting
+    # * 
+    # * @param alpha
+    # * @param beta
+    # * @param epsilon
+    # */
     #@__init__.register(object, float, float, float)
     def __init__(self, alpha = 0.1, beta = 0.2, epsilon = 0.0):
-        """ generated source for method __init___0 """
+
         self.initializeNetWeights()
-        #self.selector = Selector(self, epsilon)
         
         self.alpha = alpha
         self.beta = beta
         
         self.epsilon = epsilon
         self.explorationInPercent = int(((100 * epsilon) - 1))
-    # 
+
+
     # 	 * set epsilon parameter, epsilon is the eploration rate of the agent
     # 	 * 
     # 	 * @param epsilon
     # 	 
     def setEpsilon(self, epsilon):
-        """ generated source for method setEpsilon """
-        #self.selector.setEpsilon(epsilon)
         self.epsilon = epsilon
         self.explorationInPercent = int(((100 * epsilon) - 1))
 
@@ -80,7 +69,6 @@ class Agent(object):
     # 	 * @return
     # 	 
     def getAlpha(self):
-        """ generated source for method getAlpha """
         return self.alpha
 
     # 
@@ -90,7 +78,6 @@ class Agent(object):
     # 	 * @return
     # 	 
     def getBeta(self):
-        """ generated source for method getBeta """
         return self.beta
 
     # 
@@ -100,7 +87,6 @@ class Agent(object):
     # 	 * @return
     # 	 
     def setAlpha(self, alpha):
-        """ generated source for method setAlpha """
         self.alpha = alpha
 
     # 
@@ -110,7 +96,6 @@ class Agent(object):
     # 	 * @return
     # 	 
     def setBeta(self, beta):
-        """ generated source for method setBeta """
         self.beta = beta
 
     # 
@@ -119,7 +104,6 @@ class Agent(object):
     # 	 * @return
     # 	 
     def getEpsilon(self):
-        """ generated source for method getEpsilon """
         return self.epsilon
 
     # 
@@ -130,11 +114,10 @@ class Agent(object):
     def setInput(self, inputVector):
         """ generated source for method setInput """
         self.lastInput = [None]*self.N_INPUT
-        #i = 0
-        #while i < len(self.lastInput):
+
         for i in range(len(self.lastInput)-1):
             self.lastInput[i] = inputVector[i]
-            #i += 1
+            
         #  BIAS neuron
         self.lastInput[self.N_INPUT - 1] = self.biasInputLayer
 
@@ -155,15 +138,14 @@ class Agent(object):
         self.lastInput[8] = 1
         #  bias
         self.lastInput[9] = 1
-
+        """  """
     # 
     # 	 * initializing arrays
     # 	 
     def initializeNetWeights(self):
-        """ generated source for method initializeNetWeights """
-        self.random = Random()
-        #  weight arrays init
-        #self.weightsInputHidden = [None]*self.N_INPUT
+
+        #self.random = Random()
+        """ weight arrays init """
         self.weightsInputHidden = [ [ 0.0 for i in range(self.N_HIDDEN) ] for j in range(self.N_INPUT) ]
         #self.weightsHiddenOutput = [None]*self.N_HIDDEN
         self.weightsHiddenOutput = [ [ 0.0 for i in range(self.N_OUTPUT) ] for j in range( self.N_HIDDEN) ]
@@ -296,48 +278,33 @@ class Agent(object):
         self.weightsHiddenOutput = deepcopy(bufferHiddenOutput)
 
     def setTargetSignal(self, targetSignal):
-        """ generated source for method setTargetSignal """
         self.targetSignal = targetSignal
 
     def transferFunction(self, x):
-        """ generated source for method transferFunction """
         return float(math.tanh(x))
 
     def transferFunctionDerivate(self, x):
-        """ generated source for method transferFunctionDerivate """
         return float(1.0) - (x * x)
 
     def calcWeightOutputHidden(self, oldWeight, learningRateAlpha, input, errorSignalDelta, old_output):
-        """ generated source for method calcWeightOutputHidden """
         w = oldWeight + learningRateAlpha * input * errorSignalDelta * self.transferFunctionDerivate(old_output)
         return w
 
     def calcWeightHiddenInput(self, oldWeight, learningRateAlpha, input, errorSignalDelta):
-        """ generated source for method calcWeightHiddenInput """
         w = oldWeight + learningRateAlpha * input * errorSignalDelta
         return w
 
     def getDeltaForHiddenNeuron(self, deltaBefore, weights):
-        """ generated source for method getDeltaForHiddenNeuron """
         return self.weightedSum(deltaBefore, weights)
 
     def activationFunction(self, weights, activations):
-        """ generated source for method activationFunction """
         return self.transferFunction(self.weightedSum(weights, activations))
 
     def weightedSum(self, weights, activations):
-        """ generated source for method weightedSum """
         s = 0.0
-        #i = 0
-        #while len(weights):
-        
-        print str(len(weights))
-        print str(len(activations))
         
         for i in range(len(weights)):
-            print str(i)
             s = s + weights[i] * activations[i]
-            #i += 1
         return s
 
     def printOutWeightTable(self):
@@ -452,14 +419,13 @@ class Agent(object):
                 possibilityCounter += 1
         if randomDecision:
             random = self.random.randrange(0,possibilityCounter,1)
-            print str(random)
+            #print str(random)
             return fieldNumbers[random]
         
         best = 0
         for i in range(len(possibleMoves)):
             if fieldValue[i] >= fieldValue[best]:
                 best = i
-            #i += 1
         if len(possibleMoves)>0:
             return fieldNumbers[best]
         else:
