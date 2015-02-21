@@ -5,7 +5,6 @@
 
 from copy import deepcopy
 import math
-from nt import write
 import os
 import string
 
